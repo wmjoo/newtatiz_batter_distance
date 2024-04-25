@@ -120,7 +120,7 @@ try:
     
     ####################
     st.header('Records')
-    st.write(df[final_options_order].reset_index(drop=True)
+    st.write(df[final_options_order].reset_index(drop=True))
 
 except Exception as e:
     st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
