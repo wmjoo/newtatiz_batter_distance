@@ -102,7 +102,7 @@ try:
     
     # 유클리드 거리 계산
     distances = np.sqrt(((scaled_df[scaled_ratio_cols] - np.array(scaled_df.iloc[input_player_idx][scaled_ratio_cols]))**2).sum(axis=1))
-    df['dist'] = distances
+    df['dist'] = round(distances, 3)
     df = df.sort_values('dist').reset_index(drop=True)
 
     # 선택된 항목들을 먼저, 나머지를 그 뒤에 배열
