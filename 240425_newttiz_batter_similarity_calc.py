@@ -92,7 +92,9 @@ try:
     for index, option in enumerate(options):
         col = columns[index % num_columns]
         with col:
-            is_selected = st.checkbox(option, value=option in default_selections, key=option)
+            is_selected = st.checkbox(option, #value=option in default_selections, 
+                                      value=st.session_state.selected_all, 
+                                      key=option)
             if is_selected:
                 selected_options.append(option)
     
