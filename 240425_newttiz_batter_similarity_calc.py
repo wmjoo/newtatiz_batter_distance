@@ -21,47 +21,35 @@ try:
     
     # 두 번째 요소만 추출
     second_elements = [element[1] for element in df.columns]
-    # print(second_elements)
     df.columns = second_elements
     df = df[second_elements[:-1]]
     df['yr_team_pos'] = df.Team.copy()
     
-    #%%
     yr_lst = []
     team_lst = []
     pos_lst = []
     # NaN 값을 이전 행의 값으로 덮어쓰기
     for i in range(len(df['yr_team_pos'])):
         tmp_str = df['yr_team_pos'][i]
-    
         yr_lst = yr_lst + [tmp_str[:2]]
         team_lst = yr_lst + [tmp_str[2:-2]]
-        
-        # print(i, df['Name'][i], tmp_str[:2], tmp_str[2:-2], tmp_str[-2:])
     df['yr'] = yr_lst    
-    #display(df.yr.value_counts())
-    ##%%
     baseball_positions = ["P", "C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "DH"]
     for pos in baseball_positions :
         if pos == 'C':
             pos_boollist = df['yr_team_pos'].str.endswith(pos)
         else:
             pos_boollist = df['yr_team_pos'].str.contains(pos)
-            
-        # print(pos, sum(pos_boollist))
         df_pos = df[pos_boollist]
         df.loc[pos_boollist, ['pos']] = pos
-        # print(df_pos.head(2))
+
     df.pos = df.pos.fillna("")    
-    #display(df.pos.value_counts())
     
     teams = ["L", "롯", "두", "한", "키", "넥", "히", "삼", "S", "k", "K", "현", "N" , "O", "해", "쌍"]
     for team in teams :
         team_boollist = df['yr_team_pos'].str.contains(team)
-        # print(team, sum(team_boollist ))
         df_team = df[team_boollist]
         df.loc[team_boollist, ['team']] = team
-    #display(df.team.value_counts())    
     # 수치형 데이터만 포함하는 열 필터링
     numeric_data = df.select_dtypes(include=['int64', 'float64'])
     numeric_data_cols = ['scaled_' + i for i in numeric_data.columns]
@@ -70,21 +58,30 @@ try:
     scaler = StandardScaler()
     scaled_arr = scaler.fit_transform(numeric_data)
     scaled_df = pd.DataFrame(scaled_arr, columns= numeric_data_cols)
-    #scaled_df
     input_player_idx = df.index[df.Name == input_player][0]
-    #print(input_player_idx)
     
     df_row = df[df.Name == input_player]
-    #display(df_row)
     df_exceptrow = df[df.Name != input_player]
-    #display(df_exceptrow)
+
+    default_selections  = ['AVG', 'OBP', 'SLG', 'OPS', 'wRC+']
+    # 사용자가 선택할 수 있는 목록
+    options = ['WAR', 'G', 'PA', 'ePA', 'AB', 'R', 'H', '2B', '3B', 'HR', 
+               'TB', 'RBI', 'SB', 'CS', 'BB', 'HP', 'IB', 'SO', 'GDP', 'SH', 'SF', 
+           'AVG', 'OBP', 'SLG', 'OPS', 'R/ePA', 'wRC+']
     
-    # df.columns
+    # 체크박스를 사용해 각 항목의 선택 여부 결정
+    selected_options = []
+    for option in options:
+        # 'default_selections' 리스트에 있는 항목은 디폴트로 체크
+        is_selected = st.checkbox(option, value=option in default_selections, key=option)
+        if is_selected:
+            selected_options.append(option)
     
-    ratio_cols = ['WAR', #'G', 'PA', 'ePA', 'AB', 'R', 'H', '2B', '3B', 'HR', 'TB', 'RBI', 'SB', 'CS', 'BB', 'HP', 'IB', 'SO', 'GDP', 'SH', 'SF', 
-           'AVG', 'OBP', 'SLG', 'OPS', #'R/ePA', 
-           'wRC+']
-    
+    # 선택된 항목 리스트 출력
+    st.write("선택된 항목:", selected_options)
+
+    # 선택된 항목을 거리 계산 기준열로 할당
+    ratio_cols = selected_options    
     scaled_ratio_cols = ['scaled_' + i for i  in ratio_cols]
     
     # 유클리드 거리 계산
