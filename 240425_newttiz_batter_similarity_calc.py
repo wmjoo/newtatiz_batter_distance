@@ -69,16 +69,21 @@ try:
                'TB', 'RBI', 'SB', 'CS', 'BB', 'HP', 'IB', 'SO', 'GDP', 'SH', 'SF', 
            'AVG', 'OBP', 'SLG', 'OPS', 'R/ePA', 'wRC+']
     
-    # 체크박스를 사용해 각 항목의 선택 여부 결정
+    # 체크박스를 5열로 배열
+    num_columns = 5
+    columns = st.columns(num_columns)
     selected_options = []
-    for option in options:
-        # 'default_selections' 리스트에 있는 항목은 디폴트로 체크
-        is_selected = st.checkbox(option, value=option in default_selections, key=option)
-        if is_selected:
-            selected_options.append(option)
+    
+    # 각 열에 체크박스 배치
+    for index, option in enumerate(options):
+        col = columns[index % num_columns]
+        with col:
+            is_selected = st.checkbox(option, value=option in default_selections, key=option)
+            if is_selected:
+                selected_options.append(option)
     
     # 선택된 항목 리스트 출력
-    st.write("선택된 항목:", selected_options)
+    # st.write("선택된 항목:", selected_options)
 
     # 선택된 항목을 거리 계산 기준열로 할당
     ratio_cols = selected_options    
