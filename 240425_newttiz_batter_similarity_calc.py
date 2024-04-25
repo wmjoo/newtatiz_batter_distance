@@ -113,11 +113,14 @@ try:
     distances = np.sqrt(((scaled_df[scaled_ratio_cols] - np.array(scaled_df.iloc[input_player_idx][scaled_ratio_cols]))**2).sum(axis=1))
     df['dist'] = distances
     df = df.sort_values('dist').reset_index(drop=True)
-    
+
+    # 선택된 항목들을 먼저, 나머지를 그 뒤에 배열
+    final_options_order = ['Rank', 'Name'] + selected_options + [option for option in options if option not in selected_options]
+
     
     ####################
     st.header('Records')
-    st.write(df)
+    st.write(df[final_options_order].reset_index(drop=True)
 
 except Exception as e:
     st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
