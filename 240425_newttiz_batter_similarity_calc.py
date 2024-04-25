@@ -87,7 +87,7 @@ try:
         st.session_state.selected_all = False
     
     # 체크박스를 5열로 배열
-    num_columns = 5
+    num_columns = 7
     columns = st.columns(num_columns)
     selected_options = []
     
@@ -103,7 +103,7 @@ try:
                 selected_options.append(option)
     
     # 선택된 항목 리스트 출력
-    st.write("선택된 항목:", selected_options)
+    ## st.write("선택된 항목:", selected_options)
 
     # 선택된 항목을 거리 계산 기준열로 할당
     ratio_cols = selected_options    
