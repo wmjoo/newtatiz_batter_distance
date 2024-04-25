@@ -18,8 +18,12 @@ tables = pd.read_html(response.text)
 
 # 첫 번째 테이블을 출력
 df = tables[0]
-st.write(df)
+
 # 두 번째 요소만 추출
 second_elements = [element[1] for element in df.columns]
 # print(second_elements)
+df.columns = second_elements
+
+st.header('Records')
+st.write(df)
 
