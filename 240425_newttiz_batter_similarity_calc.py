@@ -9,7 +9,6 @@ import lxml
 st.set_page_config(page_title="타자 유사도 비교", page_icon=":baseball:")
 
 try:
-    num_columns = 7
     st.header('Options')
     input_player = st.text_input('Player Name : ', '박용택')
     # URL 설정
@@ -68,11 +67,14 @@ try:
     df_row = df[df.Name == input_player]
     df_exceptrow = df[df.Name != input_player]
 
-    default_selections  = ['AVG', 'OBP', 'SLG', 'OPS', 'wRC+']
+    #############################################
     # 사용자가 선택할 수 있는 목록
     options = ['WAR', 'G', 'PA', 'ePA', 'AB', 'R', 'H', '2B', '3B', 'HR', 
                'TB', 'RBI', 'SB', 'CS', 'BB', 'HP', 'IB', 'SO', 'GDP', 'SH', 'SF', 
-           'AVG', 'OBP', 'SLG', 'OPS', 'R/ePA', 'wRC+']
+               'AVG', 'OBP', 'SLG', 'OPS', 'R/ePA', 'wRC+']
+    
+    # 디폴트로 선택되어야 할 항목들
+    default_selections = ['AVG', 'OBP', 'SLG', 'OPS', 'wRC+']
     
     # Streamlit 세션 상태 관리
     if 'selected_all' not in st.session_state:
@@ -84,7 +86,8 @@ try:
     elif st.button('전체 해제'):
         st.session_state.selected_all = False
     
-    # 체크박스를 N열로 배열
+    # 체크박스를 5열로 배열
+    num_columns = 5
     columns = st.columns(num_columns)
     selected_options = []
     
@@ -92,14 +95,15 @@ try:
     for index, option in enumerate(options):
         col = columns[index % num_columns]
         with col:
-            is_selected = st.checkbox(option, #value=option in default_selections, 
-                                      value=st.session_state.selected_all, 
+            # 디폴트 선택 항목 또는 전체 선택/해제 상태에 따라 체크박스 초기값 설정
+            is_selected = st.checkbox(option, 
+                                      value=(option in default_selections) or st.session_state.selected_all, 
                                       key=option)
             if is_selected:
                 selected_options.append(option)
     
     # 선택된 항목 리스트 출력
-    # st.write("선택된 항목:", selected_options)
+    st.write("선택된 항목:", selected_options)
 
     # 선택된 항목을 거리 계산 기준열로 할당
     ratio_cols = selected_options    
