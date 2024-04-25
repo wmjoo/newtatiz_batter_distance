@@ -90,7 +90,6 @@ scaled_ratio_cols = ['scaled_' + i for i  in ratio_cols]
 
 # 유클리드 거리 계산
 distances = np.sqrt(((scaled_df[scaled_ratio_cols] - np.array(scaled_df.iloc[input_player_idx][scaled_ratio_cols]))**2).sum(axis=1))
-distances
 df['dist'] = distances
 df = df.sort_values('dist').reset_index(drop=True)
 
