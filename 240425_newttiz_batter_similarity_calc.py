@@ -74,6 +74,16 @@ try:
                'TB', 'RBI', 'SB', 'CS', 'BB', 'HP', 'IB', 'SO', 'GDP', 'SH', 'SF', 
            'AVG', 'OBP', 'SLG', 'OPS', 'R/ePA', 'wRC+']
     
+    # Streamlit 세션 상태 관리
+    if 'selected_all' not in st.session_state:
+        st.session_state.selected_all = False
+    
+    # 전체 선택 또는 해제 버튼
+    if st.button('전체 선택'):
+        st.session_state.selected_all = True
+    elif st.button('전체 해제'):
+        st.session_state.selected_all = False
+    
     # 체크박스를 N열로 배열
     columns = st.columns(num_columns)
     selected_options = []
