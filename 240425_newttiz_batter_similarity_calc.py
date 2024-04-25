@@ -70,7 +70,7 @@ try:
            'AVG', 'OBP', 'SLG', 'OPS', 'R/ePA', 'wRC+']
     
     # 체크박스를 5열로 배열
-    num_columns = 5
+    num_columns = 6
     columns = st.columns(num_columns)
     selected_options = []
     
