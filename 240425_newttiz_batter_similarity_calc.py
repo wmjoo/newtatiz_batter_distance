@@ -115,7 +115,7 @@ try:
     df = df.sort_values('dist').reset_index(drop=True)
 
     # 선택된 항목들을 먼저, 나머지를 그 뒤에 배열
-    final_options_order = ['Rank', 'Name'] + selected_options + [option for option in options if option not in selected_options]
+    final_options_order = ['dist', 'Rank', 'Name'] + selected_options + [option for option in options if option not in selected_options]
 
     
     ####################
