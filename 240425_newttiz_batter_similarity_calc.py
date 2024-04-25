@@ -5,8 +5,11 @@ import numpy as np
 import requests
 import lxml
 
+# 페이지 설정: 탭 제목 변경
+st.set_page_config(page_title="타자 유사도 비교", page_icon=":baseball:")
+
 try:
-    num_columns = 10
+    num_columns = 8
     st.header('Options')
     input_player = st.text_input('Player Name : ', '박용택')
     # URL 설정
