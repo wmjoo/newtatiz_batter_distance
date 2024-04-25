@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 import numpy as np
 import requests
+import lxml
 
 input_player = st.text_input('Player Name : ', '')
 # st.write('The selected Player : ', player_name)
