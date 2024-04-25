@@ -9,7 +9,7 @@ import lxml
 st.set_page_config(page_title="타자 유사도 비교", page_icon=":baseball:")
 
 try:
-    num_columns = 8
+    num_columns = 7
     st.header('Options')
     input_player = st.text_input('Player Name : ', '박용택')
     # URL 설정
