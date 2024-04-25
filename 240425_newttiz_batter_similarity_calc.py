@@ -75,7 +75,7 @@ try:
     
     # 디폴트로 선택되어야 할 항목들
     default_selections = ['AVG', 'OBP', 'SLG', 'OPS', 'wRC+']
-    
+    '''
     # Streamlit 세션 상태 관리
     if 'selected_all' not in st.session_state:
         st.session_state.selected_all = False
@@ -85,7 +85,7 @@ try:
         st.session_state.selected_all = True
     elif st.button('전체 해제'):
         st.session_state.selected_all = False
-    
+    '''
     # 체크박스를 5열로 배열
     num_columns = 7
     columns = st.columns(num_columns)
@@ -97,7 +97,8 @@ try:
         with col:
             # 디폴트 선택 항목 또는 전체 선택/해제 상태에 따라 체크박스 초기값 설정
             is_selected = st.checkbox(option, 
-                                      value=(option in default_selections) or st.session_state.selected_all, 
+                                      value=option in default_selections,
+                                      # value=(option in default_selections) or st.session_state.selected_all, 
                                       key=option)
             if is_selected:
                 selected_options.append(option)
