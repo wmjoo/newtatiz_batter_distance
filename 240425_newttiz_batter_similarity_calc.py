@@ -6,6 +6,7 @@ import requests
 import lxml
 
 try:
+    num_columns = 10
     st.header('Options')
     input_player = st.text_input('Player Name : ', '박용택')
     # URL 설정
@@ -70,8 +71,7 @@ try:
                'TB', 'RBI', 'SB', 'CS', 'BB', 'HP', 'IB', 'SO', 'GDP', 'SH', 'SF', 
            'AVG', 'OBP', 'SLG', 'OPS', 'R/ePA', 'wRC+']
     
-    # 체크박스를 5열로 배열
-    num_columns = 6
+    # 체크박스를 N열로 배열
     columns = st.columns(num_columns)
     selected_options = []
     
