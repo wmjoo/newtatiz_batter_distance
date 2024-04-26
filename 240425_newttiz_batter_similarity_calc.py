@@ -58,9 +58,8 @@ try:
 
     #############################################    
     st.subheader('Find Similar Player')
-
-    # 두 열로 레이아웃 분할
-    col1, col2, col3, col4 = st.columns(3)
+    # 여러 열로 레이아웃 분할
+    col1, col2, col3 = st.columns(3)
     
     # 첫 번째 열에 텍스트 입력 창 생성
     with col1:
@@ -71,7 +70,40 @@ try:
     # 3번째 열에 버튼 생성
     with col3:
         submit_button = st.button("검색")
+    #############################################
+    # 체크박스 생성
+    samepos_check = st.checkbox('Same Position')
+    st.write(samepos_check)
+    # 체크 여부에 따라 행동 결정
+    if samepos_check:
+        st.write('체크박스가 선택되었습니다.')
+    else:
+        st.write('체크박스가 선택되지 않았습니다.')
+    # 사용자가 선택할 수 있는 목록
+    options = ['WAR', 'G', 'PA', 'ePA', 'AB', 'R', 'H', '2B', '3B', 'HR', 
+               'TB', 'RBI', 'SB', 'CS', 'BB', 'HP', 'IB', 'SO', 'GDP', 'SH', 'SF', 
+               'AVG', 'OBP', 'SLG', 'OPS', 'R/ePA', 'wRC+']
+    
+    # 디폴트로 선택되어야 할 항목들
+    default_selections = ['AVG', 'OBP', 'SLG', 'OPS', 'wRC+']
 
+    # 체크박스를 N열로 배열
+    num_columns = 7
+    columns = st.columns(num_columns)
+    
+    # 각 열에 체크박스 배치
+    st.write('Stats')
+    for index, option in enumerate(options):
+        col = columns[index % num_columns]
+        with col:
+            # 디폴트 선택 항목 또는 전체 선택/해제 상태에 따라 체크박스 초기값 설정
+            is_selected = st.checkbox(option, 
+                                      value=option in default_selections,
+                                      # value=(option in default_selections) or st.session_state.selected_all, 
+                                      key=option)
+            if is_selected:
+                selected_options.append(option)
+    
     if submit_button:
         # 수치형 데이터만 포함하는 열 필터링
         numeric_data = df.select_dtypes(include=['int64', 'float64'])
@@ -87,40 +119,6 @@ try:
         if samepos_check:
             st.write(df_row.pos[0])
         df_exceptrow = df[df.Name != input_player]
-    
-        #############################################
-        # 체크박스 생성
-        samepos_check = st.checkbox('Same Position')
-        st.write(samepos_check)
-        # 체크 여부에 따라 행동 결정
-        if samepos_check:
-            st.write('체크박스가 선택되었습니다.')
-        else:
-            st.write('체크박스가 선택되지 않았습니다.')
-        # 사용자가 선택할 수 있는 목록
-        options = ['WAR', 'G', 'PA', 'ePA', 'AB', 'R', 'H', '2B', '3B', 'HR', 
-                   'TB', 'RBI', 'SB', 'CS', 'BB', 'HP', 'IB', 'SO', 'GDP', 'SH', 'SF', 
-                   'AVG', 'OBP', 'SLG', 'OPS', 'R/ePA', 'wRC+']
-        
-        # 디폴트로 선택되어야 할 항목들
-        default_selections = ['AVG', 'OBP', 'SLG', 'OPS', 'wRC+']
-    
-        # 체크박스를 N열로 배열
-        num_columns = 7
-        columns = st.columns(num_columns)
-        
-        # 각 열에 체크박스 배치
-        st.write('Stats')
-        for index, option in enumerate(options):
-            col = columns[index % num_columns]
-            with col:
-                # 디폴트 선택 항목 또는 전체 선택/해제 상태에 따라 체크박스 초기값 설정
-                is_selected = st.checkbox(option, 
-                                          value=option in default_selections,
-                                          # value=(option in default_selections) or st.session_state.selected_all, 
-                                          key=option)
-                if is_selected:
-                    selected_options.append(option)
     
         # 선택된 항목을 거리 계산 기준열로 할당
         ratio_cols = selected_options    
