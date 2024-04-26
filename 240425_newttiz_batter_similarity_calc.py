@@ -69,7 +69,7 @@ try:
     # 두 열로 레이아웃 분할
     col1, col2 = st.columns(2)
     with col1:
-        input_player = st.text_input('Name', '박용택')
+        input_player = st.text_input('Name', '홍창기')
     with col2:
         topN = st.text_input('Top N', 10) # label_visibility="hidden")    
         
@@ -89,8 +89,7 @@ try:
         col = columns[index % num_columns]
         with col:
             # 디폴트 선택 항목 또는 전체 선택/해제 상태에 따라 체크박스 초기값 설정
-            is_selected = st.checkbox(option, 
-                                        value=options,
+            is_selected = st.checkbox(option, value=options,
                                         # value=(option in default_selections) or st.session_state.selected_all, 
                                         key=option)
             if is_selected:
