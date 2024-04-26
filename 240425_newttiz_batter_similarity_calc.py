@@ -9,7 +9,7 @@ import plotly.express as px
 # 페이지 설정: 탭 제목 변경
 st.set_page_config(page_title="타자 유사도 비교", page_icon=":baseball:")
 
-tab1, tab2, tab3 = st.tabs(["Raw", "Find Simmiliar Player", "Plotl"])
+tab1, tab2, tab3 = st.tabs(["Raw", "Find Simmiliar Player", "Plot"])
 
 with tab1:
    try:
