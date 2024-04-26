@@ -110,6 +110,7 @@ try:
         columns = st.columns(num_columns)
         
         # 각 열에 체크박스 배치
+        st.write('Stats')
         for index, option in enumerate(options):
             col = columns[index % num_columns]
             with col:
