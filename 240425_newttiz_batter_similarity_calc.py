@@ -136,7 +136,7 @@ try:
         ####################
         st.subheader('Similar Players')
         st.write(df_final)
-
+'''
         st.scatter_chart(
             df_final,
             x=selected_options[0],
@@ -144,6 +144,26 @@ try:
             color='Name',
             # size='col3',
         )
+'''
+        # 레이아웃 설정
+        col1, col2, col3 = st.columns(3)
+        
+        # 첫 번째 열: X축 선택
+        with col1:
+            x_axis = st.selectbox("X 축을 선택하세요", selected_options)
+        
+        # 두 번째 열: Y축 선택
+        with col2:
+            y_axis = st.selectbox("Y 축을 선택하세요", selected_options)
+        
+        # 세 번째 열: 버튼
+        with col3:
+            plot_button = st.button("생성")
+        
+        # 그래프 생성
+        if plot_button:
+            fig = px.scatter(df_final, x=x_axis, y=y_axis, title=f"Scatter Plot of {x_axis} vs {y_axis}")
+            st.plotly_chart(fig)
 
 
 except Exception as e:
