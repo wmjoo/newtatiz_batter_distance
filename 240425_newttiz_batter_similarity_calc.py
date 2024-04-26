@@ -136,15 +136,6 @@ try:
         ####################
         st.subheader('Similar Players')
         st.write(df_final)
-'''
-        st.scatter_chart(
-            df_final,
-            x=selected_options[0],
-            y=selected_options[1],
-            color='Name',
-            # size='col3',
-        )
-'''
         # 레이아웃 설정
         col1, col2, col3 = st.columns(3)
         
