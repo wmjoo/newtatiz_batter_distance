@@ -135,7 +135,7 @@ try:
 
         ####################
         # 그래프 생성
-        if len(selected_options) >= 2:
+        if (len(selected_options) >= 2) and (df_final.shape[0] >= 2):
             st.subheader('Plotting Graph')
             try:
                 # 레이아웃 설정
@@ -153,7 +153,7 @@ try:
                     plot_button = st.button("그래프 생성")
             
                 # df_final 존재 여부 확인
-                if df_final.empty:
+                if plot_button : # not df_final.empty:
                     fig = px.scatter(df_final, x=x_axis, y=y_axis, text="Name",
                                      title=f"Scatter Plot of {x_axis} vs {y_axis}",
                                      hover_data=["Name"])  # Name 컬럼을 호버 데이터로 추가
