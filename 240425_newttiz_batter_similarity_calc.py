@@ -136,25 +136,37 @@ try:
         ####################
         st.subheader('Similar Players')
         st.write(df_final)
-        # 레이아웃 설정
-        col1, col2, col3 = st.columns(3)
-        
-        # 첫 번째 열: X축 선택
-        with col1:
-            x_axis = st.selectbox("X 축을 선택하세요", selected_options)
-        
-        # 두 번째 열: Y축 선택
-        with col2:
-            y_axis = st.selectbox("Y 축을 선택하세요", selected_options)
-        
-        # 세 번째 열: 버튼
-        with col3:
-            plot_button = st.button("생성")
-        
-        # 그래프 생성
-        if plot_button:
-            fig = px.scatter(df_final, x=x_axis, y=y_axis, title=f"Scatter Plot of {x_axis} vs {y_axis}")
-            st.plotly_chart(fig)
+
+    ####################
+    st.subheader('Similar Players Plotting')    
+    # 레이아웃 설정
+    col1, col2, col3 = st.columns(3)
+    
+    # 첫 번째 열: X축 선택
+    with col1:
+        x_axis = st.selectbox("X 축을 선택하세요", selected_options)
+    
+    # 두 번째 열: Y축 선택
+    with col2:
+        y_axis = st.selectbox("Y 축을 선택하세요", selected_options)
+    
+    # 세 번째 열: 버튼
+    with col3:
+        plot_button = st.button("생성")
+    
+    # 그래프 생성
+    if plot_button:
+        fig = px.scatter(df, x=x_axis, y=y_axis, text="Name",
+                 title=f"Scatter Plot of {x_axis} vs {y_axis}",
+                 hover_data=["Name"])  # Name 컬럼을 호버 데이터로 추가
+        fig.update_traces(marker=dict(size=10),
+                          hoverinfo='text+x+y',
+                          hovertemplate="<br>".join([
+                              "Name: %{hovertext}",
+                              "{x_axis}: %{x}",
+                              "{y_axis}: %{y}"
+                          ]))
+        st.plotly_chart(fig)
 
 
 except Exception as e:
