@@ -56,7 +56,7 @@ try:
         df.loc[team_boollist, ['team']] = team
 
     #############################################
-    st.write(df.drop('Team', 1).reset_index(drop=True))
+    st.write(df.drop('Team', axis = 1).reset_index(drop=True))
     st.header('Options')    
     
     # 수치형 데이터만 포함하는 열 필터링
