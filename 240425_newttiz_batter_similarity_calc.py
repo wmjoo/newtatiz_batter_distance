@@ -64,7 +64,7 @@ try:
     
     # 첫 번째 열에 텍스트 입력 창 생성
     with col1:
-        input_player = st.text_input('',  '박용택', label_visibility="hidden")
+        input_player = st.text_input('Name', '박용택')
     # 2번째 열에 텍스트 입력 창 생성
     with col2:
         topN = st.text_input('Top N', 10) # label_visibility="hidden")    
