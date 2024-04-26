@@ -133,6 +133,7 @@ with tab2:
        if submit_button:
            # 수치형 데이터만 포함하는 열 필터링
            numeric_data = df.select_dtypes(include=['int64', 'float64'])
+           numeric_date_cols_orig = numeric_data.columns.tolist()
            numeric_data_cols = ['scaled_' + i for i in numeric_data.columns]
            
            # 표준화
@@ -168,10 +169,13 @@ with tab2:
            ####################
            st.subheader('Similar Players')
            st.write(df_final)
+           st.session_state.df_final = df_final
+           st.session_state.numeric_date_cols_orig = numeric_date_cols_orig
 
    except Exception as e:
        st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
 with tab3:
+    st.write(numeric_date_cols_orig)
     try:
         # 그래프 생성
         st.subheader('Plotting Graph')
