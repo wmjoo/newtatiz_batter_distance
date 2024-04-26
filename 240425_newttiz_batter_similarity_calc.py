@@ -180,18 +180,26 @@ try:
             plot_button = st.button("그래프 생성")        
 
         # if plot_button : # not df_final.empty:
-        fig = px.scatter(df_final, x=x_axis, y=y_axis, text="Name",
-                         title=f"Scatter Plot of {x_axis} vs {y_axis}",
-                         hover_data=["Name"])  # Name 컬럼을 호버 데이터로 추가
-        fig.update_traces(marker=dict(size=10),
+        # 사용자 입력 받기
+        x_axis = st.selectbox('Select the X-axis', options=df_final.columns, index=df_final.columns[0]) #.get_loc('Age'))
+        y_axis = st.selectbox('Select the Y-axis', options=df_final.columns, index=df_final.columns.[1]) #get_loc('Income'))
+        
+        # 스케터 플롯 생성
+        fig = px.scatter(df_final, x=x_axis, y=y_axis, text='Name',
+                         title=f'Scatter Plot of {x_axis} vs {y_axis}',
+                         hover_data=['Name'])
+        
+        # 축 범위가 데이터에 따라 자동 조정됨
+        fig.update_traces(marker=dict(size=12),
                           hoverinfo='text+x+y',
-                         "Name: %{hovertext}",
-                        f"{x_axis}: %{{x}}",
-                        f"{y_axis}: %{{y}}"
-                         )
+                          hovertemplate="<br>".join([
+                              "Name: %{hovertext}",
+                              f"{x_axis}: %{x}",
+                              f"{y_axis}: %{y}"
+                          ]))
+        
+        # 스트림릿에 플롯 출력
         st.plotly_chart(fig)
-            # except Exception as e:
-                # st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
 except Exception as e:
     st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
 
