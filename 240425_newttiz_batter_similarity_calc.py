@@ -1,4 +1,4 @@
-ㅌimport streamlit as st
+import streamlit as st
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 import numpy as np
