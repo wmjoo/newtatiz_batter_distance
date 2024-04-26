@@ -141,7 +141,9 @@ try:
     st.subheader('Similar Players Plotting')    
     # 레이아웃 설정
     col1, col2, col3 = st.columns(3)
-    
+
+    if selected_options is None:
+        selected_options = default_selections
     # 첫 번째 열: X축 선택
     with col1:
         x_axis = st.selectbox("X 축을 선택하세요", selected_options)
@@ -167,7 +169,6 @@ try:
                               "{y_axis}: %{y}"
                           ]))
         st.plotly_chart(fig)
-
 
 except Exception as e:
     st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
