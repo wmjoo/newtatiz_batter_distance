@@ -64,15 +64,14 @@ try:
     
     # 첫 번째 열에 텍스트 입력 창 생성
     with col1:
-        input_player = st.text_input('Player Name : ', '박용택')
+        input_player = st.text_input('박용택')
     
     # 두 번째 열에 버튼 생성
     with col2:
-        submit_button = st.button("그래프 생성")
+        submit_button = st.button("검색")
 
     # 버튼 클릭 시 scatter plot 출력
     if submit_button:
-    
         # 수치형 데이터만 포함하는 열 필터링
         numeric_data = df.select_dtypes(include=['int64', 'float64'])
         numeric_data_cols = ['scaled_' + i for i in numeric_data.columns]
