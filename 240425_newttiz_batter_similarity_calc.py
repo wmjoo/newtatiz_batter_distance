@@ -120,7 +120,7 @@ try:
     ####################
     st.header('Similar Players')
     topN = st.text_input('Top N  : ', 10)
-    st.write(df_final.head(topN+1))
+    st.write(df_final.head(int(topN)+1))
 
 except Exception as e:
     st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
