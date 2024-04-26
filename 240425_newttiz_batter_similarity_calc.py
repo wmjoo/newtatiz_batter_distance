@@ -168,7 +168,7 @@ if len(selected_options) >= 2:
                                       f"{y_axis}: %{y}"
                                   ]))
                 st.plotly_chart(fig)
-        else:
-            st.error("df_final 데이터 프레임이 존재하지 않거나 비어 있습니다.")
+            else:
+                st.error("df_final 데이터 프레임이 존재하지 않거나 비어 있습니다.")
     except NameError:
         st.error("df_final 데이터 프레임이 정의되지 않았습니다.")
