@@ -168,8 +168,8 @@ try:
                     st.plotly_chart(fig)
                 else:
                     st.error("df_final 데이터 프레임이 존재하지 않거나 비어 있습니다.")
-            except NameError:
-                st.error("df_final 데이터 프레임이 정의되지 않았습니다.")
+            except Exception as e:
+                st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
 except Exception as e:
     st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
 
