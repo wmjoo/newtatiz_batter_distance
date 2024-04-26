@@ -114,7 +114,8 @@ try:
     final_options_order = ['dist', 'Rank', 'Name', 'pos'] + selected_options + [option for option in options if option not in selected_options]
 
     df_final = df[final_options_order].reset_index(drop=True)
-    df_final = df_final[df_final[selected_options].dropna()].reset_index(drop=True)
+    df_final = df_final.loc[~df_final[selected_options].isna().any(axis=1)]
+        #df_final[df_final[selected_options].dropna()].reset_index(drop=True)
     
     ####################
     st.header('Records')
