@@ -9,7 +9,7 @@ import lxml
 st.set_page_config(page_title="타자 유사도 비교", page_icon=":baseball:")
 
 try:
-    st.header('Options')
+    st.header('RawData table')
     input_player = st.text_input('Player Name : ', '박용택')
     # URL 설정
     url = 'https://statiz.sporki.com/stats/?m=total&m2=batting&m3=default&so=WAR&ob=DESC&sy=1982&ey=2024&te=&po=&lt=10100&reg=A&pe=&ds=&de=&we=&hr=&ha=&ct=&st=&vp=&bo=&pt=&pp=&ii=&vc=&um=&oo=&rr=&sc=&bc=&ba=&li=&as=&ae=&pl=&gc=&lr=&pr=1000&ph=&hs=&us=&na=&ls=0&sf1=G&sk1=&sv1=&sf2=G&sk2=&sv2='
@@ -55,7 +55,10 @@ try:
         df_team = df[team_boollist]
         df.loc[team_boollist, ['team']] = team
 
-    st.write(df.reset_index(drop=True))
+    #############################################
+    st.write(df.drop('Team', 1).reset_index(drop=True))
+    st.header('Options')    
+    
     # 수치형 데이터만 포함하는 열 필터링
     numeric_data = df.select_dtypes(include=['int64', 'float64'])
     numeric_data_cols = ['scaled_' + i for i in numeric_data.columns]
