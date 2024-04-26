@@ -98,12 +98,10 @@ try:
 
     # 사용자가 선택할 수 있는 목록
     st.write('Stats')        
-    options = ['WAR', 'G', 'PA', 'ePA', 'AB', 'R', 'H', '2BH', '3BH', 'HR', 
-                'TB', 'RBI', 'SB', 'CS', 'BB', 'HP', 'IB', 'SO', 'GDP', 'SH', 'SF', 
-                'AVG', 'OBP', 'SLG', 'OPS', 'R/ePA', 'wRC+']
+    options = ['WAR', 'G', 'PA', 'ePA', 'AB', 'R', 'H', '2BH', '3BH', 'HR',  'TB', 'RBI', 'SB', 'CS', 'BB', 'HP', 'IB', 'SO', 'GDP', 'SH', 'SF',  'AVG', 'OBP', 'SLG', 'OPS', 'R/ePA', 'wRC+']
     
     # 디폴트로 선택되어야 할 항목들
-    default_selections = ['AVG', 'OBP', 'SLG', 'OPS', 'wRC+']
+    default_selections = ['AB', 'AVG', 'OBP', 'SLG', 'OPS', 'wRC+']
 
     # 체크박스를 N열로 배열
     num_columns = 7
