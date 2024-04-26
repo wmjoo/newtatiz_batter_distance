@@ -133,26 +133,23 @@ try:
         ####################
         st.subheader('Similar Players')
         st.write(df_final)
-
-        ####################
-        # 레이아웃 설정
-        col1, col2, col3 = st.columns(3)    
-        # 첫 번째 열: X축 선택
-        with col1:
-            x_axis = st.selectbox("X 축을 선택하세요", selected_options)
-        
-        # 두 번째 열: Y축 선택
-        with col2:
-            y_axis = st.selectbox("Y 축을 선택하세요", selected_options)
-        
-        # 세 번째 열: 버튼
-        with col3:
-            plot_button = st.button("그래프 생성")
-
 except Exception as e:
     st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
 
+####################
+# 레이아웃 설정
+col1, col2, col3 = st.columns(3)    
+# 첫 번째 열: X축 선택
+with col1:
+    x_axis = st.selectbox("X 축을 선택하세요", selected_options)
 
+# 두 번째 열: Y축 선택
+with col2:
+    y_axis = st.selectbox("Y 축을 선택하세요", selected_options)
+
+# 세 번째 열: 버튼
+with col3:
+    plot_button = st.button("그래프 생성")
 # 그래프 생성
 if plot_button:
     try:
