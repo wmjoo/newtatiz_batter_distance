@@ -131,8 +131,8 @@ try:
             #df_final[df_final[selected_options].dropna()].reset_index(drop=True)
         
         ####################
-        st.header('Similar Players')
-        topN = st.text_input('Top N  : ', 10)
+        st.subheader('Similar Players')
+        topN = st.selectbox('Top N', (5, 10, 20, 30, 50, 100))
         st.write(df_final.head(int(topN)+1))
 
 except Exception as e:
