@@ -71,7 +71,7 @@ try:
     with col1:
         input_player = st.text_input('Name', '박용택')
     with col2:
-        topN = st.text_input('Top N', 5) # label_visibility="hidden")    
+        topN = st.text_input('Top N', 10) # label_visibility="hidden")    
         
     # 사용자가 선택할 수 있는 목록
     options = baseball_positions + ['']
