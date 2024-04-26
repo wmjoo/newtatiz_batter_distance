@@ -8,54 +8,57 @@ import lxml
 # 페이지 설정: 탭 제목 변경
 st.set_page_config(page_title="타자 유사도 비교", page_icon=":baseball:")
 selected_options = []
+
+######################################################################
+## 1. 데이터 로드
+######################################################################
+st.header('RawData table')
+# URL 설정
+url = 'https://statiz.sporki.com/stats/?m=total&m2=batting&m3=default&so=WAR&ob=DESC&sy=1982&ey=2024&te=&po=&lt=10100&reg=A&pe=&ds=&de=&we=&hr=&ha=&ct=&st=&vp=&bo=&pt=&pp=&ii=&vc=&um=&oo=&rr=&sc=&bc=&ba=&li=&as=&ae=&pl=&gc=&lr=&pr=1000&ph=&hs=&us=&na=&ls=0&sf1=G&sk1=&sv1=&sf2=G&sk2=&sv2='
+
+# 웹페이지에서 데이터를 가져옴
+response = requests.get(url)
+
+# HTML 내의 모든 테이블을 DataFrame으로 읽어옴
+tables = pd.read_html(response.text)
+
+# 첫 번째 테이블을 출력
+df = tables[0]
+
+# 두 번째 요소만 추출
+second_elements = [element[1] for element in df.columns]
+df.columns = second_elements
+df = df[second_elements[:-1]]
+df['yr_team_pos'] = df.Team.copy()
+
+yr_lst = []
+team_lst = []
+pos_lst = []
+# NaN 값을 이전 행의 값으로 덮어쓰기
+for i in range(len(df['yr_team_pos'])):
+    tmp_str = df['yr_team_pos'][i]
+    yr_lst = yr_lst + [tmp_str[:2]]
+    team_lst = yr_lst + [tmp_str[2:-2]]
+df['yr'] = yr_lst    
+baseball_positions = ["P", "C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "DH"]
+for pos in baseball_positions :
+    if pos == 'C':
+        pos_boollist = df['yr_team_pos'].str.endswith(pos)
+    else:
+        pos_boollist = df['yr_team_pos'].str.contains(pos)
+    df_pos = df[pos_boollist]
+    df.loc[pos_boollist, ['pos']] = pos
+
+df.pos = df.pos.fillna("")    
+
+teams = ["L", "롯", "두", "한", "키", "넥", "히", "삼", "S", "k", "K", "현", "N" , "O", "해", "쌍"]
+for team in teams :
+    team_boollist = df['yr_team_pos'].str.contains(team)
+    df_team = df[team_boollist]
+    df.loc[team_boollist, ['team']] = team
+
+st.write(df.drop('Team', axis = 1).reset_index(drop=True))
 try:
-    st.header('RawData table')
-    # URL 설정
-    url = 'https://statiz.sporki.com/stats/?m=total&m2=batting&m3=default&so=WAR&ob=DESC&sy=1982&ey=2024&te=&po=&lt=10100&reg=A&pe=&ds=&de=&we=&hr=&ha=&ct=&st=&vp=&bo=&pt=&pp=&ii=&vc=&um=&oo=&rr=&sc=&bc=&ba=&li=&as=&ae=&pl=&gc=&lr=&pr=1000&ph=&hs=&us=&na=&ls=0&sf1=G&sk1=&sv1=&sf2=G&sk2=&sv2='
-    
-    # 웹페이지에서 데이터를 가져옴
-    response = requests.get(url)
-    
-    # HTML 내의 모든 테이블을 DataFrame으로 읽어옴
-    tables = pd.read_html(response.text)
-    
-    # 첫 번째 테이블을 출력
-    df = tables[0]
-    
-    # 두 번째 요소만 추출
-    second_elements = [element[1] for element in df.columns]
-    df.columns = second_elements
-    df = df[second_elements[:-1]]
-    df['yr_team_pos'] = df.Team.copy()
-    
-    yr_lst = []
-    team_lst = []
-    pos_lst = []
-    # NaN 값을 이전 행의 값으로 덮어쓰기
-    for i in range(len(df['yr_team_pos'])):
-        tmp_str = df['yr_team_pos'][i]
-        yr_lst = yr_lst + [tmp_str[:2]]
-        team_lst = yr_lst + [tmp_str[2:-2]]
-    df['yr'] = yr_lst    
-    baseball_positions = ["P", "C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "DH"]
-    for pos in baseball_positions :
-        if pos == 'C':
-            pos_boollist = df['yr_team_pos'].str.endswith(pos)
-        else:
-            pos_boollist = df['yr_team_pos'].str.contains(pos)
-        df_pos = df[pos_boollist]
-        df.loc[pos_boollist, ['pos']] = pos
-
-    df.pos = df.pos.fillna("")    
-    
-    teams = ["L", "롯", "두", "한", "키", "넥", "히", "삼", "S", "k", "K", "현", "N" , "O", "해", "쌍"]
-    for team in teams :
-        team_boollist = df['yr_team_pos'].str.contains(team)
-        df_team = df[team_boollist]
-        df.loc[team_boollist, ['team']] = team
-
-    st.write(df.drop('Team', axis = 1).reset_index(drop=True))
-
     #############################################    
     st.subheader('Find Similar Player')
     # 여러 열로 레이아웃 분할
