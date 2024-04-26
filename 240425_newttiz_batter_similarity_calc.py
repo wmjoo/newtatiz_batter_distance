@@ -60,14 +60,16 @@ try:
     st.subheader('Find Similar Player')
 
     # 두 열로 레이아웃 분할
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
     
     # 첫 번째 열에 텍스트 입력 창 생성
     with col1:
         input_player = st.text_input('',  '박용택', label_visibility="hidden")
-    
-    # 두 번째 열에 버튼 생성
+    # 2번째 열에 텍스트 입력 창 생성
     with col2:
+        topN = st.text_input('Top N', 10) # label_visibility="hidden")    
+    # 3번째 열에 버튼 생성
+    with col3:
         submit_button = st.button("검색")
 
     # 버튼 클릭 시 scatter plot 출력
@@ -132,7 +134,6 @@ try:
         
         ####################
         st.subheader('Similar Players')
-        topN = st.selectbox('Top N', (5, 10, 20, 30, 50, 100))
         st.write(df_final.head(int(topN)+1))
 
 except Exception as e:
