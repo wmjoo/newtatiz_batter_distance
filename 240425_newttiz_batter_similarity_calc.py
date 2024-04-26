@@ -7,7 +7,7 @@ import lxml
 
 # 페이지 설정: 탭 제목 변경
 st.set_page_config(page_title="타자 유사도 비교", page_icon=":baseball:")
-
+selected_options = []
 try:
     st.header('RawData table')
     # URL 설정
@@ -99,7 +99,6 @@ try:
         # 체크박스를 N열로 배열
         num_columns = 7
         columns = st.columns(num_columns)
-        selected_options = []
         
         # 각 열에 체크박스 배치
         for index, option in enumerate(options):
