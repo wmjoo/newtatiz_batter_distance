@@ -60,160 +60,156 @@ with tab1:
             df.loc[team_boollist, ['team']] = team
     
         st.dataframe(df.drop(['yr_team_pos'], axis = 1).reset_index(drop=True))
-    except Exception as e:
-        st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
+
+   except Exception as e:
+      st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
 
 with tab2:
-   st.header("A dog")
-   st.image("https://static.streamlit.io/examples/dog.jpg", width=200)
-
-selected_options = []
-
-
-    #############################################    
-    # 두 열로 레이아웃 분할
-    col1, col2 = st.columns(2)
-    with col1:    
-        st.subheader('Find Similar Player')
-    with col2:
-        submit_button = st.button("검색")
-
-    # 두 열로 레이아웃 분할
-    col1, col2 = st.columns(2)
-    with col1:
-        input_player = st.text_input('Name', '홍창기')
-    with col2:
-        topN = st.text_input('Top N', 10) # label_visibility="hidden")    
-        
-    # 사용자가 선택할 수 있는 목록
-    options = baseball_positions + ['']
-    # 디폴트로 선택되어야 할 항목들
-    # default_selections = ['AVG', 'OBP', 'SLG', 'OPS', 'wRC+']
-
-    #############################################
-    # 체크박스를 N열로 배열
-    st.write('Positions')
-    num_columns = 6
-    columns = st.columns(num_columns)
-    selected_positions = []
-    # 각 열에 체크박스 배치
-    for index, option in enumerate(options):
-        col = columns[index % num_columns]
-        with col:
-            # 디폴트 선택 항목 또는 전체 선택/해제 상태에 따라 체크박스 초기값 설정
-            is_selected = st.checkbox(option, value=options,
-                                        # value=(option in default_selections) or st.session_state.selected_all, 
-                                        key=option)
-            if is_selected:
-                selected_positions.append(option)
-
-    # 사용자가 선택할 수 있는 목록
-    st.write('Stats')        
-    options = ['WAR', 'G', 'PA', 'ePA', 'AB', 'R', 'H', '2BH', '3BH', 'HR',  'TB', 'RBI', 'SB', 'CS', 'BB', 'HP', 'IB', 'SO', 'GDP', 'SH', 'SF',  'AVG', 'OBP', 'SLG', 'OPS', 'R/ePA', 'wRC+']
-    
-    # 디폴트로 선택되어야 할 항목들
-    default_selections = ['AB', 'AVG', 'OBP', 'SLG', 'OPS', 'wRC+']
-
-    # 체크박스를 N열로 배열
-    num_columns = 7
-    columns = st.columns(num_columns)
-    
-    # 각 열에 체크박스 배치
-    for index, option in enumerate(options):
-        col = columns[index % num_columns]
-        with col:
-            # 디폴트 선택 항목 또는 전체 선택/해제 상태에 따라 체크박스 초기값 설정
-            is_selected = st.checkbox(option, 
-                                        value=option in default_selections,
-                                        # value=(option in default_selections) or st.session_state.selected_all, 
-                                        key=option)
-            if is_selected:
-                selected_options.append(option)
-
-    # 선택된 항목을 거리 계산 기준열로 할당
-    ratio_cols = selected_options    
-    scaled_ratio_cols = ['scaled_' + i for i  in ratio_cols]
-    
-    if submit_button:
-        # 수치형 데이터만 포함하는 열 필터링
-        numeric_data = df.select_dtypes(include=['int64', 'float64'])
-        numeric_data_cols = ['scaled_' + i for i in numeric_data.columns]
-        
-        # 표준화
-        scaler = StandardScaler()
-        scaled_arr = scaler.fit_transform(numeric_data)
-        scaled_df = pd.DataFrame(scaled_arr, columns= numeric_data_cols)
-        input_player_idx = df.index[df.Name == input_player][0]
-        
-        df_row = df[df.Name == input_player]
-        df_exceptrow = df[df.Name != input_player]
-    
-        #############################################
-        # 체크박스 생성
-        # samepos_check = st.checkbox('Same Position')
-        # st.write(samepos_check)
-        # if samepos_check:
-        #     st.write(df_row.pos[0])
-        
-        # 유클리드 거리 계산
-        distances = np.sqrt(((scaled_df[scaled_ratio_cols] - np.array(scaled_df.iloc[input_player_idx][scaled_ratio_cols]))**2).sum(axis=1))
-        df['dist'] = round(distances, 3)
-        df = df.sort_values('dist').reset_index(drop=True)
-    
-        # 선택된 항목들을 먼저, 나머지를 그 뒤에 배열
-        final_options_order = ['dist', 'Rank', 'Name', 'pos'] + selected_options + [option for option in options if option not in selected_options]
-    
-        df_final = df[final_options_order].reset_index(drop=True)
-        df_final = df_final.loc[df_final.pos.isin(pd.Series(selected_positions))] # 최종 검색 결과에서 선택된 포지션만 반영 되도록
-        df_final = df_final.loc[~df_final[selected_options].isna().any(axis=1)]
-        df_final = df_final.head(int(topN)+1)
-            #df_final[df_final[selected_options].dropna()].reset_index(drop=True)
-        
-        ####################
-        st.subheader('Similar Players')
-        st.write(df_final)
-
-        ####################
-        # 그래프 생성
-        st.subheader('Plotting Graph')
-        # 레이아웃 설정
-        # col1, col2, col3 = st.columns(3)    
-        # # 첫 번째 열: X축 선택
-        # with col1:
-        #     x_axis = st.selectbox("X 축을 선택하세요", selected_options, index = 0)
-        
-        # # 두 번째 열: Y축 선택
-        # with col2:
-        #     y_axis = st.selectbox("Y 축을 선택하세요", selected_options, index = 1)
-        
-        # # 세 번째 열: 버튼
-        # with col3:
-        #     plot_button = st.button("그래프 생성")        
-
-        # if plot_button : # not df_final.empty:
-        # 사용자 입력 받기
-        x_axis = st.selectbox('Select the X-axis', options=selected_options, index=0) #df_final.columns[0]) #.get_loc('Age'))
-        y_axis = st.selectbox('Select the Y-axis', options=selected_options, index=1) # df_final.columns[1]) #get_loc('Income'))
-        st.write(x_axis)
-        st.write(y_axis)
-        st.write(df_final[x_axis])
-        # 스케터 플롯 생성
-        fig = px.scatter(df_final, x=x_axis, y=y_axis, text='Name',
-                         title=f'Scatter Plot of {x_axis} vs {y_axis}',
-                         hover_data=['Name'])
-        
-        # 축 범위가 데이터에 따라 자동 조정됨
-        fig.update_traces(marker=dict(size=12),
-                          hoverinfo='text+x+y',
-                                hovertemplate="<br>".join([
-                                    "Name: %{hovertext}",
-                                    "{}: %{{x}}".format(x_axis),
-                                    "{}: %{{y}}".format(y_axis)
-                                ])
-                         )
-        
-        # 스트림릿에 플롯 출력
-        st.plotly_chart(fig)
-except Exception as e:
-    st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
+   selected_options = []
+   try:
+       # 두 열로 레이아웃 분할
+       col1, col2 = st.columns(2)
+       with col1:    
+           st.subheader('Find Similar Player')
+       with col2:
+           submit_button = st.button("검색")
+   
+       # 두 열로 레이아웃 분할
+       col1, col2 = st.columns(2)
+       with col1:
+           input_player = st.text_input('Name', '홍창기')
+       with col2:
+           topN = st.text_input('Top N', 10) # label_visibility="hidden")    
+           
+       # 사용자가 선택할 수 있는 목록
+       options = baseball_positions + ['']
+       # 디폴트로 선택되어야 할 항목들
+       # default_selections = ['AVG', 'OBP', 'SLG', 'OPS', 'wRC+']
+   
+       #############################################
+       # 체크박스를 N열로 배열
+       st.write('Positions')
+       num_columns = 6
+       columns = st.columns(num_columns)
+       selected_positions = []
+       # 각 열에 체크박스 배치
+       for index, option in enumerate(options):
+           col = columns[index % num_columns]
+           with col:
+               # 디폴트 선택 항목 또는 전체 선택/해제 상태에 따라 체크박스 초기값 설정
+               is_selected = st.checkbox(option, value=options,
+                                           # value=(option in default_selections) or st.session_state.selected_all, 
+                                           key=option)
+               if is_selected:
+                   selected_positions.append(option)
+   
+       # 사용자가 선택할 수 있는 목록
+       st.write('Stats')        
+       options = ['WAR', 'G', 'PA', 'ePA', 'AB', 'R', 'H', '2BH', '3BH', 'HR',  'TB', 'RBI', 'SB', 'CS', 'BB', 'HP', 'IB', 'SO', 'GDP', 'SH', 'SF',  'AVG', 'OBP', 'SLG', 'OPS', 'R/ePA', 'wRC+']
+       
+       # 디폴트로 선택되어야 할 항목들
+       default_selections = ['AB', 'AVG', 'OBP', 'SLG', 'OPS', 'wRC+']
+   
+       # 체크박스를 N열로 배열
+       num_columns = 7
+       columns = st.columns(num_columns)
+       
+       # 각 열에 체크박스 배치
+       for index, option in enumerate(options):
+           col = columns[index % num_columns]
+           with col:
+               # 디폴트 선택 항목 또는 전체 선택/해제 상태에 따라 체크박스 초기값 설정
+               is_selected = st.checkbox(option, 
+                                           value=option in default_selections,
+                                           # value=(option in default_selections) or st.session_state.selected_all, 
+                                           key=option)
+               if is_selected:
+                   selected_options.append(option)
+   
+       # 선택된 항목을 거리 계산 기준열로 할당
+       ratio_cols = selected_options    
+       scaled_ratio_cols = ['scaled_' + i for i  in ratio_cols]
+       
+       if submit_button:
+           # 수치형 데이터만 포함하는 열 필터링
+           numeric_data = df.select_dtypes(include=['int64', 'float64'])
+           numeric_data_cols = ['scaled_' + i for i in numeric_data.columns]
+           
+           # 표준화
+           scaler = StandardScaler()
+           scaled_arr = scaler.fit_transform(numeric_data)
+           scaled_df = pd.DataFrame(scaled_arr, columns= numeric_data_cols)
+           input_player_idx = df.index[df.Name == input_player][0]
+           
+           df_row = df[df.Name == input_player]
+           df_exceptrow = df[df.Name != input_player]
+       
+           #############################################
+           # 체크박스 생성
+           # samepos_check = st.checkbox('Same Position')
+           # st.write(samepos_check)
+           # if samepos_check:
+           #     st.write(df_row.pos[0])
+           
+           # 유클리드 거리 계산
+           distances = np.sqrt(((scaled_df[scaled_ratio_cols] - np.array(scaled_df.iloc[input_player_idx][scaled_ratio_cols]))**2).sum(axis=1))
+           df['dist'] = round(distances, 3)
+           df = df.sort_values('dist').reset_index(drop=True)
+       
+           # 선택된 항목들을 먼저, 나머지를 그 뒤에 배열
+           final_options_order = ['dist', 'Rank', 'Name', 'pos'] + selected_options + [option for option in options if option not in selected_options]
+       
+           df_final = df[final_options_order].reset_index(drop=True)
+           df_final = df_final.loc[df_final.pos.isin(pd.Series(selected_positions))] # 최종 검색 결과에서 선택된 포지션만 반영 되도록
+           df_final = df_final.loc[~df_final[selected_options].isna().any(axis=1)]
+           df_final = df_final.head(int(topN)+1)
+               #df_final[df_final[selected_options].dropna()].reset_index(drop=True)
+           
+           ####################
+           st.subheader('Similar Players')
+           st.write(df_final)
+   
+           ####################
+           # 그래프 생성
+           st.subheader('Plotting Graph')
+           # 레이아웃 설정
+           # col1, col2, col3 = st.columns(3)    
+           # # 첫 번째 열: X축 선택
+           # with col1:
+           #     x_axis = st.selectbox("X 축을 선택하세요", selected_options, index = 0)
+           
+           # # 두 번째 열: Y축 선택
+           # with col2:
+           #     y_axis = st.selectbox("Y 축을 선택하세요", selected_options, index = 1)
+           
+           # # 세 번째 열: 버튼
+           # with col3:
+           #     plot_button = st.button("그래프 생성")        
+   
+           # if plot_button : # not df_final.empty:
+           # 사용자 입력 받기
+           x_axis = st.selectbox('Select the X-axis', options=selected_options, index=0) #df_final.columns[0]) #.get_loc('Age'))
+           y_axis = st.selectbox('Select the Y-axis', options=selected_options, index=1) # df_final.columns[1]) #get_loc('Income'))
+           st.write(x_axis)
+           st.write(y_axis)
+           st.write(df_final[x_axis])
+           # 스케터 플롯 생성
+           fig = px.scatter(df_final, x=x_axis, y=y_axis, text='Name',
+                            title=f'Scatter Plot of {x_axis} vs {y_axis}',
+                            hover_data=['Name'])
+           
+           # 축 범위가 데이터에 따라 자동 조정됨
+           fig.update_traces(marker=dict(size=12),
+                             hoverinfo='text+x+y',
+                                   hovertemplate="<br>".join([
+                                       "Name: %{hovertext}",
+                                       "{}: %{{x}}".format(x_axis),
+                                       "{}: %{{y}}".format(y_axis)
+                                   ])
+                            )
+           
+           # 스트림릿에 플롯 출력
+           st.plotly_chart(fig)
+   except Exception as e:
+       st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
 
