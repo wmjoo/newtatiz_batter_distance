@@ -132,42 +132,44 @@ try:
         ####################
         st.subheader('Similar Players')
         st.write(df_final)
+
+        ####################
+        # 그래프 생성
+        if len(selected_options) >= 2:
+            st.subheader('Plotting Graph')
+            try:
+                # 레이아웃 설정
+                col1, col2, col3 = st.columns(3)    
+                # 첫 번째 열: X축 선택
+                with col1:
+                    x_axis = st.selectbox("X 축을 선택하세요", selected_options, index = 0)
+                
+                # 두 번째 열: Y축 선택
+                with col2:
+                    y_axis = st.selectbox("Y 축을 선택하세요", selected_options, index = 1)
+                
+                # 세 번째 열: 버튼
+                with col3:
+                    plot_button = st.button("그래프 생성")
+            
+                    # df_final 존재 여부 확인
+                    if 'df_final' in locals() and not df_final.empty:
+                        st.subheader('Similar Players Plotting')    
+                        fig = px.scatter(df_final, x=x_axis, y=y_axis, text="Name",
+                                         title=f"Scatter Plot of {x_axis} vs {y_axis}",
+                                         hover_data=["Name"])  # Name 컬럼을 호버 데이터로 추가
+                        fig.update_traces(marker=dict(size=10),
+                                          hoverinfo='text+x+y',
+                                          hovertemplate="<br>".join([
+                                              "Name: %{hovertext}",
+                                              f"{x_axis}: %{x}",
+                                              f"{y_axis}: %{y}"
+                                          ]))
+                        st.plotly_chart(fig)
+                    else:
+                        st.error("df_final 데이터 프레임이 존재하지 않거나 비어 있습니다.")
+            except NameError:
+                st.error("df_final 데이터 프레임이 정의되지 않았습니다.")
 except Exception as e:
     st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
 
-####################
-# 그래프 생성
-if len(selected_options) >= 2:
-    try:
-        # 레이아웃 설정
-        col1, col2, col3 = st.columns(3)    
-        # 첫 번째 열: X축 선택
-        with col1:
-            x_axis = st.selectbox("X 축을 선택하세요", selected_options)
-        
-        # 두 번째 열: Y축 선택
-        with col2:
-            y_axis = st.selectbox("Y 축을 선택하세요", selected_options)
-        
-        # 세 번째 열: 버튼
-        with col3:
-            plot_button = st.button("그래프 생성")
-    
-            # df_final 존재 여부 확인
-            if 'df_final' in locals() and not df_final.empty:
-                st.subheader('Similar Players Plotting')    
-                fig = px.scatter(df_final, x=x_axis, y=y_axis, text="Name",
-                                 title=f"Scatter Plot of {x_axis} vs {y_axis}",
-                                 hover_data=["Name"])  # Name 컬럼을 호버 데이터로 추가
-                fig.update_traces(marker=dict(size=10),
-                                  hoverinfo='text+x+y',
-                                  hovertemplate="<br>".join([
-                                      "Name: %{hovertext}",
-                                      f"{x_axis}: %{x}",
-                                      f"{y_axis}: %{y}"
-                                  ]))
-                st.plotly_chart(fig)
-            else:
-                st.error("df_final 데이터 프레임이 존재하지 않거나 비어 있습니다.")
-    except NameError:
-        st.error("df_final 데이터 프레임이 정의되지 않았습니다.")
