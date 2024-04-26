@@ -154,7 +154,6 @@ try:
             
                 # df_final 존재 여부 확인
                 if df_final.empty:
-                    # st.subheader('Similar Players Plotting')    
                     fig = px.scatter(df_final, x=x_axis, y=y_axis, text="Name",
                                      title=f"Scatter Plot of {x_axis} vs {y_axis}",
                                      hover_data=["Name"])  # Name 컬럼을 호버 데이터로 추가
