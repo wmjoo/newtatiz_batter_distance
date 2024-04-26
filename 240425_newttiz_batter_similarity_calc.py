@@ -141,7 +141,7 @@ try:
             df_final,
             x=selected_options[0],
             y=selected_options[1],
-            color='dist',
+            color='Name',
             # size='col3',
         )
 
