@@ -73,9 +73,9 @@ try:
         # submit_button = st.button("검색")
         # 체크박스 생성
         samepos_check = st.checkbox('Same Position')
-        st.write(check)
+        st.write(samepos_check)
         # 체크 여부에 따라 행동 결정
-        if check:
+        if samepos_check:
             st.write('체크박스가 선택되었습니다.')
         else:
             st.write('체크박스가 선택되지 않았습니다.')
