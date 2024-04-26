@@ -56,7 +56,7 @@ try:
 
    #############################################
     st.write(df.drop('Team', axis = 1).reset_index(drop=True))
-#############################################    
+   #############################################    
     st.header('Options')    
     input_player = st.text_input('Player Name : ', '박용택')
     # 수치형 데이터만 포함하는 열 필터링
@@ -113,10 +113,12 @@ try:
     # 선택된 항목들을 먼저, 나머지를 그 뒤에 배열
     final_options_order = ['dist', 'Rank', 'Name', 'pos'] + selected_options + [option for option in options if option not in selected_options]
 
+    df_final = df[final_options_order].reset_index(drop=True)
+    df_final = df_final[selected_options].dropna().reset_index(drop=True)
     
     ####################
     st.header('Records')
-    st.write(df[final_options_order].reset_index(drop=True))
+    st.write(df_final)
 
 except Exception as e:
     st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
