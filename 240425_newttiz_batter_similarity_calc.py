@@ -184,7 +184,7 @@ try:
         y_axis = st.selectbox('Select the Y-axis', options=selected_options, index=1) # df_final.columns[1]) #get_loc('Income'))
         st.write(x_axis)
         st.write(y_axis)
-        st.write(df_final.shape)
+        st.write(df_final[x_axis])
         # 스케터 플롯 생성
         fig = px.scatter(df_final, x=x_axis, y=y_axis, text='Name',
                          title=f'Scatter Plot of {x_axis} vs {y_axis}',
@@ -193,10 +193,11 @@ try:
         # 축 범위가 데이터에 따라 자동 조정됨
         fig.update_traces(marker=dict(size=12),
                           hoverinfo='text+x+y',
-                          hovertemplate="<br>".join([
-                              "Name: %{hovertext}",
-                              f"{x_axis}: %{x}",
-                              f"{y_axis}: %{y}"
+                                hovertemplate="<br>".join([
+                                    "Name: %{hovertext}",
+                                    "{}: %{{x}}".format(x_axis),
+                                    "{}: %{{y}}".format(y_axis)
+                                ])
                           ]))
         
         # 스트림릿에 플롯 출력
