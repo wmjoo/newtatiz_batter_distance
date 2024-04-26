@@ -148,27 +148,29 @@ try:
         # 세 번째 열: 버튼
         with col3:
             plot_button = st.button("그래프 생성")
-        
-        # 그래프 생성
-        if plot_button:
-            try:
-                # df_final 존재 여부 확인
-                if 'df_final' in locals():
-                    st.subheader('Similar Players Plotting')    
-                    fig = px.scatter(df_final, x=x_axis, y=y_axis, text="Name",
-                             title=f"Scatter Plot of {x_axis} vs {y_axis}",
-                             hover_data=["Name"])  # Name 컬럼을 호버 데이터로 추가
-                    fig.update_traces(marker=dict(size=10),
-                                      hoverinfo='text+x+y',
-                                      hovertemplate="<br>".join([
-                                          "Name: %{hovertext}",
-                                          "{x_axis}: %{x}",
-                                          "{y_axis}: %{y}"
-                                      ]))
-                    st.plotly_chart(fig)
-                else:
-                    st.error("df_final 데이터 프레임이 존재하지 않습니다.")
-            except NameError:
-                st.error("df_final 데이터 프레임이 정의되지 않았습니다.")
+
 except Exception as e:
     st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
+
+
+# 그래프 생성
+if plot_button:
+    try:
+        # df_final 존재 여부 확인
+        if 'df_final' in locals() and not df_final.empty:
+            st.subheader('Similar Players Plotting')    
+            fig = px.scatter(df_final, x=x_axis, y=y_axis, text="Name",
+                             title=f"Scatter Plot of {x_axis} vs {y_axis}",
+                             hover_data=["Name"])  # Name 컬럼을 호버 데이터로 추가
+            fig.update_traces(marker=dict(size=10),
+                              hoverinfo='text+x+y',
+                              hovertemplate="<br>".join([
+                                  "Name: %{hovertext}",
+                                  f"{x_axis}: %{x}",
+                                  f"{y_axis}: %{y}"
+                              ]))
+            st.plotly_chart(fig)
+        else:
+            st.error("df_final 데이터 프레임이 존재하지 않거나 비어 있습니다.")
+    except NameError:
+        st.error("df_final 데이터 프레임이 정의되지 않았습니다.")
