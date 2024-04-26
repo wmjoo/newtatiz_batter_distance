@@ -57,70 +57,84 @@ try:
    #############################################
     st.write(df.drop('Team', axis = 1).reset_index(drop=True))
    #############################################    
-    st.header('Options')    
-    input_player = st.text_input('Player Name : ', '박용택')
-    # 수치형 데이터만 포함하는 열 필터링
-    numeric_data = df.select_dtypes(include=['int64', 'float64'])
-    numeric_data_cols = ['scaled_' + i for i in numeric_data.columns]
-    
-    # 표준화
-    scaler = StandardScaler()
-    scaled_arr = scaler.fit_transform(numeric_data)
-    scaled_df = pd.DataFrame(scaled_arr, columns= numeric_data_cols)
-    input_player_idx = df.index[df.Name == input_player][0]
-    
-    df_row = df[df.Name == input_player]
-    df_exceptrow = df[df.Name != input_player]
+    st.header('Options')
 
-    #############################################
-    # 사용자가 선택할 수 있는 목록
-    options = ['WAR', 'G', 'PA', 'ePA', 'AB', 'R', 'H', '2B', '3B', 'HR', 
-               'TB', 'RBI', 'SB', 'CS', 'BB', 'HP', 'IB', 'SO', 'GDP', 'SH', 'SF', 
-               'AVG', 'OBP', 'SLG', 'OPS', 'R/ePA', 'wRC+']
+    # 두 열로 레이아웃 분할
+    col1, col2 = st.columns(2)
     
-    # 디폴트로 선택되어야 할 항목들
-    default_selections = ['AVG', 'OBP', 'SLG', 'OPS', 'wRC+']
+    # 첫 번째 열에 텍스트 입력 창 생성
+    with col1:
+        input_player = st.text_input('Player Name : ', '박용택')
+    
+    # 두 번째 열에 버튼 생성
+    with col2:
+        submit_button = st.button("그래프 생성")
 
-    # 체크박스를 N열로 배열
-    num_columns = 7
-    columns = st.columns(num_columns)
-    selected_options = []
+    # 버튼 클릭 시 scatter plot 출력
+    if submit_button:
     
-    # 각 열에 체크박스 배치
-    for index, option in enumerate(options):
-        col = columns[index % num_columns]
-        with col:
-            # 디폴트 선택 항목 또는 전체 선택/해제 상태에 따라 체크박스 초기값 설정
-            is_selected = st.checkbox(option, 
-                                      value=option in default_selections,
-                                      # value=(option in default_selections) or st.session_state.selected_all, 
-                                      key=option)
-            if is_selected:
-                selected_options.append(option)
+        # 수치형 데이터만 포함하는 열 필터링
+        numeric_data = df.select_dtypes(include=['int64', 'float64'])
+        numeric_data_cols = ['scaled_' + i for i in numeric_data.columns]
+        
+        # 표준화
+        scaler = StandardScaler()
+        scaled_arr = scaler.fit_transform(numeric_data)
+        scaled_df = pd.DataFrame(scaled_arr, columns= numeric_data_cols)
+        input_player_idx = df.index[df.Name == input_player][0]
+        
+        df_row = df[df.Name == input_player]
+        df_exceptrow = df[df.Name != input_player]
     
-    # 선택된 항목 리스트 출력
-    ## st.write("선택된 항목:", selected_options)
-
-    # 선택된 항목을 거리 계산 기준열로 할당
-    ratio_cols = selected_options    
-    scaled_ratio_cols = ['scaled_' + i for i  in ratio_cols]
+        #############################################
+        # 사용자가 선택할 수 있는 목록
+        options = ['WAR', 'G', 'PA', 'ePA', 'AB', 'R', 'H', '2B', '3B', 'HR', 
+                   'TB', 'RBI', 'SB', 'CS', 'BB', 'HP', 'IB', 'SO', 'GDP', 'SH', 'SF', 
+                   'AVG', 'OBP', 'SLG', 'OPS', 'R/ePA', 'wRC+']
+        
+        # 디폴트로 선택되어야 할 항목들
+        default_selections = ['AVG', 'OBP', 'SLG', 'OPS', 'wRC+']
     
-    # 유클리드 거리 계산
-    distances = np.sqrt(((scaled_df[scaled_ratio_cols] - np.array(scaled_df.iloc[input_player_idx][scaled_ratio_cols]))**2).sum(axis=1))
-    df['dist'] = round(distances, 3)
-    df = df.sort_values('dist').reset_index(drop=True)
-
-    # 선택된 항목들을 먼저, 나머지를 그 뒤에 배열
-    final_options_order = ['dist', 'Rank', 'Name', 'pos'] + selected_options + [option for option in options if option not in selected_options]
-
-    df_final = df[final_options_order].reset_index(drop=True)
-    df_final = df_final.loc[~df_final[selected_options].isna().any(axis=1)]
-        #df_final[df_final[selected_options].dropna()].reset_index(drop=True)
+        # 체크박스를 N열로 배열
+        num_columns = 7
+        columns = st.columns(num_columns)
+        selected_options = []
+        
+        # 각 열에 체크박스 배치
+        for index, option in enumerate(options):
+            col = columns[index % num_columns]
+            with col:
+                # 디폴트 선택 항목 또는 전체 선택/해제 상태에 따라 체크박스 초기값 설정
+                is_selected = st.checkbox(option, 
+                                          value=option in default_selections,
+                                          # value=(option in default_selections) or st.session_state.selected_all, 
+                                          key=option)
+                if is_selected:
+                    selected_options.append(option)
+        
+        # 선택된 항목 리스트 출력
+        ## st.write("선택된 항목:", selected_options)
     
-    ####################
-    st.header('Similar Players')
-    topN = st.text_input('Top N  : ', 10)
-    st.write(df_final.head(int(topN)+1))
+        # 선택된 항목을 거리 계산 기준열로 할당
+        ratio_cols = selected_options    
+        scaled_ratio_cols = ['scaled_' + i for i  in ratio_cols]
+        
+        # 유클리드 거리 계산
+        distances = np.sqrt(((scaled_df[scaled_ratio_cols] - np.array(scaled_df.iloc[input_player_idx][scaled_ratio_cols]))**2).sum(axis=1))
+        df['dist'] = round(distances, 3)
+        df = df.sort_values('dist').reset_index(drop=True)
+    
+        # 선택된 항목들을 먼저, 나머지를 그 뒤에 배열
+        final_options_order = ['dist', 'Rank', 'Name', 'pos'] + selected_options + [option for option in options if option not in selected_options]
+    
+        df_final = df[final_options_order].reset_index(drop=True)
+        df_final = df_final.loc[~df_final[selected_options].isna().any(axis=1)]
+            #df_final[df_final[selected_options].dropna()].reset_index(drop=True)
+        
+        ####################
+        st.header('Similar Players')
+        topN = st.text_input('Top N  : ', 10)
+        st.write(df_final.head(int(topN)+1))
 
 except Exception as e:
     st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
