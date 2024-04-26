@@ -67,7 +67,7 @@ try:
         input_player = st.text_input('Name', '박용택')
     # 2번째 열에 텍스트 입력 창 생성
     with col2:
-        topN = st.text_input('Top N', 10) # label_visibility="hidden")    
+        topN = st.text_input('Top N', 9) # label_visibility="hidden")    
     # 3번째 열에 버튼 생성
     with col3:
         submit_button = st.button("검색")
@@ -130,11 +130,21 @@ try:
     
         df_final = df[final_options_order].reset_index(drop=True)
         df_final = df_final.loc[~df_final[selected_options].isna().any(axis=1)]
+        df_final = df_final.head(int(topN)+1)
             #df_final[df_final[selected_options].dropna()].reset_index(drop=True)
         
         ####################
         st.subheader('Similar Players')
-        st.write(df_final.head(int(topN)+1))
+        st.write(df_final)
+
+        st.scatter_chart(
+            df_final,
+            x=selected_options[0],
+            y=selected_options[1],
+            color='dist',
+            # size='col3',
+        )
+
 
 except Exception as e:
     st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
