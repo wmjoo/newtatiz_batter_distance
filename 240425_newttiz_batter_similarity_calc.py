@@ -166,18 +166,18 @@ try:
         # 그래프 생성
         st.subheader('Plotting Graph')
         # 레이아웃 설정
-        col1, col2, col3 = st.columns(3)    
-        # 첫 번째 열: X축 선택
-        with col1:
-            x_axis = st.selectbox("X 축을 선택하세요", selected_options, index = 0)
+        # col1, col2, col3 = st.columns(3)    
+        # # 첫 번째 열: X축 선택
+        # with col1:
+        #     x_axis = st.selectbox("X 축을 선택하세요", selected_options, index = 0)
         
-        # 두 번째 열: Y축 선택
-        with col2:
-            y_axis = st.selectbox("Y 축을 선택하세요", selected_options, index = 1)
+        # # 두 번째 열: Y축 선택
+        # with col2:
+        #     y_axis = st.selectbox("Y 축을 선택하세요", selected_options, index = 1)
         
-        # 세 번째 열: 버튼
-        with col3:
-            plot_button = st.button("그래프 생성")        
+        # # 세 번째 열: 버튼
+        # with col3:
+        #     plot_button = st.button("그래프 생성")        
 
         # if plot_button : # not df_final.empty:
         # 사용자 입력 받기
