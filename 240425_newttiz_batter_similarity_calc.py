@@ -1,4 +1,4 @@
-import streamlit as st
+ㅌimport streamlit as st
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 import numpy as np
@@ -54,17 +54,17 @@ try:
         df_team = df[team_boollist]
         df.loc[team_boollist, ['team']] = team
 
-   #############################################
     st.write(df.drop('Team', axis = 1).reset_index(drop=True))
-   #############################################    
-    st.header('Options')
+
+    #############################################    
+    st.subheader('Find Similar Player')
 
     # 두 열로 레이아웃 분할
     col1, col2 = st.columns(2)
     
     # 첫 번째 열에 텍스트 입력 창 생성
     with col1:
-        input_player = st.text_input('박용택')
+        input_player = st.text_input() # '박용택')
     
     # 두 번째 열에 버튼 생성
     with col2:
