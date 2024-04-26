@@ -185,11 +185,10 @@ try:
                          hover_data=["Name"])  # Name 컬럼을 호버 데이터로 추가
         fig.update_traces(marker=dict(size=10),
                           hoverinfo='text+x+y',
-                          hovertemplate="<br>".join([
-                              "Name: %{hovertext}",
-                              f"{x_axis}: %{x}",
-                              f"{y_axis}: %{y}"
-                          ]))
+                         "Name: %{hovertext}",
+                        f"{x_axis}: %{{x}}",
+                        f"{y_axis}: %{{y}}"
+                         )
         st.plotly_chart(fig)
             # except Exception as e:
                 # st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
