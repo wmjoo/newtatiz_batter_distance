@@ -181,8 +181,8 @@ try:
 
         # if plot_button : # not df_final.empty:
         # 사용자 입력 받기
-        x_axis = st.selectbox('Select the X-axis', options=df_final.columns, index=df_final.columns[0]) #.get_loc('Age'))
-        y_axis = st.selectbox('Select the Y-axis', options=df_final.columns, index=df_final.columns[1]) #get_loc('Income'))
+        x_axis = st.selectbox('Select the X-axis', options=df_final.columns, index=0) #df_final.columns[0]) #.get_loc('Age'))
+        y_axis = st.selectbox('Select the Y-axis', options=df_final.columns, index=1) # df_final.columns[1]) #get_loc('Income'))
         st.write(x_axis)
         st.write(y_axis)
         st.write(df_final.info)
