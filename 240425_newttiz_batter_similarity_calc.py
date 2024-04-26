@@ -198,7 +198,7 @@ try:
                                     "{}: %{{x}}".format(x_axis),
                                     "{}: %{{y}}".format(y_axis)
                                 ])
-                          ]))
+                         )
         
         # 스트림릿에 플롯 출력
         st.plotly_chart(fig)
