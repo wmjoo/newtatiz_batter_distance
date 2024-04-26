@@ -184,7 +184,7 @@ try:
         y_axis = st.selectbox('Select the Y-axis', options=selected_options, index=1) # df_final.columns[1]) #get_loc('Income'))
         st.write(x_axis)
         st.write(y_axis)
-        st.write(df_final.info())
+        st.write(df_final.shape)
         # 스케터 플롯 생성
         fig = px.scatter(df_final, x=x_axis, y=y_axis, text='Name',
                          title=f'Scatter Plot of {x_axis} vs {y_axis}',
