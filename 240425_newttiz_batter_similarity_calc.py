@@ -171,31 +171,37 @@ with tab2:
 
    except Exception as e:
        st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
-
 with tab3:
-   try:
-      ####################
-           # 그래프 생성
-           st.subheader('Plotting Graph')
-           # 사용자 입력 받기
-           x_axis = st.selectbox('Select the X-axis', options=selected_options, index=0) #df_final.columns[0]) #.get_loc('Age'))
-           y_axis = st.selectbox('Select the Y-axis', options=selected_options, index=1) # df_final.columns[1]) #get_loc('Income'))
-           # 스케터 플롯 생성
-           fig = px.scatter(df_final, x=x_axis, y=y_axis, text='Name',
-                            title=f'Scatter Plot of {x_axis} vs {y_axis}',
-                            hover_data=['Name'])
-           
-           # 축 범위가 데이터에 따라 자동 조정됨
-           fig.update_traces(marker=dict(size=12),
-                             hoverinfo='text+x+y',
-                                   hovertemplate="<br>".join([
-                                       "Name: %{hovertext}",
-                                       "{}: %{{x}}".format(x_axis),
-                                       "{}: %{{y}}".format(y_axis)
-                                   ])
-                            )
-           
-           # 스트림릿에 플롯 출력
-           st.plotly_chart(fig)
-   except Exception as e:
-       st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
+    try:
+        # 그래프 생성
+        st.subheader('Plotting Graph')
+        # 두 열로 레이아웃 분할
+        col1, col2 = st.columns(2)
+        with col1:    
+            # 사용자 입력 받기
+            x_axis = st.selectbox('Select the X-axis', options=selected_options, index=0)
+        with col2:
+            y_axis = st.selectbox('Select the Y-axis', options=selected_options, index=1)
+        
+        # 스케터 플롯 생성
+        fig = px.scatter(df_final, x=x_axis, y=y_axis, text="Name",
+                         title=f'Scatter Plot of {x_axis} vs {y_axis}',
+                         hover_data=['Name'])
+        
+        # 텍스트 위치 조정
+        fig.update_traces(textposition='top right', marker=dict(size=12),
+                          hoverinfo='text+x+y',
+                          hovertemplate="<br>".join([
+                              "Name: %{text}",
+                              "{}: %{{x}}".format(x_axis),
+                              "{}: %{{y}}".format(y_axis)
+                          ])
+        )
+        
+        # 그래프 크기 조정
+        fig.update_layout(width=800, height=600)  # 원하는 크기로 설정 가능
+
+        # 스트림릿에 플롯 출력
+        st.plotly_chart(fig, use_container_width=True)  # 화면 너비에 맞추려면 이 옵션을 사용
+    except Exception as e:
+        st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
