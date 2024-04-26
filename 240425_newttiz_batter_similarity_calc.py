@@ -138,37 +138,35 @@ try:
         st.write(df_final)
 
     ####################
-    st.subheader('Similar Players Plotting')    
-    # 레이아웃 설정
-    col1, col2, col3 = st.columns(3)
-
-    if selected_options is None:
-        selected_options = default_selections
-    # 첫 번째 열: X축 선택
-    with col1:
-        x_axis = st.selectbox("X 축을 선택하세요", selected_options)
-    
-    # 두 번째 열: Y축 선택
-    with col2:
-        y_axis = st.selectbox("Y 축을 선택하세요", selected_options)
-    
-    # 세 번째 열: 버튼
-    with col3:
-        plot_button = st.button("생성")
-    
-    # 그래프 생성
-    if plot_button:
-        fig = px.scatter(df, x=x_axis, y=y_axis, text="Name",
-                 title=f"Scatter Plot of {x_axis} vs {y_axis}",
-                 hover_data=["Name"])  # Name 컬럼을 호버 데이터로 추가
-        fig.update_traces(marker=dict(size=10),
-                          hoverinfo='text+x+y',
-                          hovertemplate="<br>".join([
-                              "Name: %{hovertext}",
-                              "{x_axis}: %{x}",
-                              "{y_axis}: %{y}"
-                          ]))
-        st.plotly_chart(fig)
+    if df_final: # df final exists
+        st.subheader('Similar Players Plotting')    
+        # 레이아웃 설정
+        col1, col2, col3 = st.columns(3)
+        # 첫 번째 열: X축 선택
+        with col1:
+            x_axis = st.selectbox("X 축을 선택하세요", selected_options)
+        
+        # 두 번째 열: Y축 선택
+        with col2:
+            y_axis = st.selectbox("Y 축을 선택하세요", selected_options)
+        
+        # 세 번째 열: 버튼
+        with col3:
+            plot_button = st.button("Generate")
+        
+        # 그래프 생성
+        if plot_button:
+            fig = px.scatter(df, x=x_axis, y=y_axis, text="Name",
+                     title=f"Scatter Plot of {x_axis} vs {y_axis}",
+                     hover_data=["Name"])  # Name 컬럼을 호버 데이터로 추가
+            fig.update_traces(marker=dict(size=10),
+                              hoverinfo='text+x+y',
+                              hovertemplate="<br>".join([
+                                  "Name: %{hovertext}",
+                                  "{x_axis}: %{x}",
+                                  "{y_axis}: %{y}"
+                              ]))
+            st.plotly_chart(fig)
 
 except Exception as e:
     st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
