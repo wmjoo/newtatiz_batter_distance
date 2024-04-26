@@ -182,7 +182,7 @@ try:
         # if plot_button : # not df_final.empty:
         # 사용자 입력 받기
         x_axis = st.selectbox('Select the X-axis', options=df_final.columns, index=df_final.columns[0]) #.get_loc('Age'))
-        y_axis = st.selectbox('Select the Y-axis', options=df_final.columns, index=df_final.columns.[1]) #get_loc('Income'))
+        y_axis = st.selectbox('Select the Y-axis', options=df_final.columns, index=df_final.columns[1]) #get_loc('Income'))
         
         # 스케터 플롯 생성
         fig = px.scatter(df_final, x=x_axis, y=y_axis, text='Name',
