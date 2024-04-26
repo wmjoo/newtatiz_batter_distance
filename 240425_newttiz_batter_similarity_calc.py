@@ -60,7 +60,7 @@ try:
     st.subheader('Find Similar Player')
 
     # 두 열로 레이아웃 분할
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns(4)
     
     # 첫 번째 열에 텍스트 입력 창 생성
     with col1:
@@ -70,9 +70,19 @@ try:
         topN = st.text_input('Top N', 9) # label_visibility="hidden")    
     # 3번째 열에 버튼 생성
     with col3:
+        # submit_button = st.button("검색")
+        # 체크박스 생성
+        samepos_check = st.checkbox('Same Position')
+        st.write(check)
+        # 체크 여부에 따라 행동 결정
+        if check:
+            st.write('체크박스가 선택되었습니다.')
+        else:
+            st.write('체크박스가 선택되지 않았습니다.')
+    # 4번째 열에 버튼 생성
+    with col4:
         submit_button = st.button("검색")
 
-    # 버튼 클릭 시 scatter plot 출력
     if submit_button:
         # 수치형 데이터만 포함하는 열 필터링
         numeric_data = df.select_dtypes(include=['int64', 'float64'])
@@ -85,6 +95,8 @@ try:
         input_player_idx = df.index[df.Name == input_player][0]
         
         df_row = df[df.Name == input_player]
+        if samepos_check:
+            st.write(df_row.pos[0])
         df_exceptrow = df[df.Name != input_player]
     
         #############################################
