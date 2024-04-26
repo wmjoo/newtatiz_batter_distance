@@ -64,7 +64,7 @@ try:
     
     # 첫 번째 열에 텍스트 입력 창 생성
     with col1:
-        input_player = st.text_input() # '박용택')
+        input_player = st.text_input('',  '박용택', label_visibility="hidden")
     
     # 두 번째 열에 버튼 생성
     with col2:
