@@ -54,6 +54,8 @@ try:
         team_boollist = df['yr_team_pos'].str.contains(team)
         df_team = df[team_boollist]
         df.loc[team_boollist, ['team']] = team
+
+    st.write(df.reset_index(drop=True))
     # 수치형 데이터만 포함하는 열 필터링
     numeric_data = df.select_dtypes(include=['int64', 'float64'])
     numeric_data_cols = ['scaled_' + i for i in numeric_data.columns]
