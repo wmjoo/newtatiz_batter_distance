@@ -29,7 +29,7 @@ similarity_data = [
 
 # DataFrame 생성
 similarity_matrix = pd.DataFrame(similarity_data, index=positions, columns=positions)
-st.write(similarity_matrix)
+#st.write(similarity_matrix)
 
 
 tab1, tab2, tab3 = st.tabs(["Raw", "Find Simmiliar Player", "Plot"])
