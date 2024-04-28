@@ -93,7 +93,7 @@ with tab2:
    # DataFrame 생성
    similarity_matrix = pd.DataFrame(similarity_data, index=positions, columns=positions)
    
-   def get_similarity(position1, position2, matrix):
+   def get_similarity(position1, position2, matrix = similarity_matrix):
        """
        이 함수는 주어진 두 포지션의 유사도 값을 반환합니다.
        
