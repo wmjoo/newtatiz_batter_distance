@@ -122,9 +122,7 @@ with tab2:
               with col:
                   # 디폴트 선택 항목 또는 전체 선택/해제 상태에 따라 체크박스 초기값 설정
                   is_selected = st.checkbox(option, 
-                                              value=option in default_selections,
-                                              # value=(option in default_selections) or st.session_state.selected_all, 
-                                              key=option)
+                                              value=option in default_selections, key=option)
                   if is_selected:
                       selected_options.append(option)
    
