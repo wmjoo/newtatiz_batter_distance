@@ -176,39 +176,42 @@ with tab2:
    except Exception as e:
        st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
 with tab3:
-    if 'df_final' in st.session_state:
-       st.write(st.session_state.df_final.head(1))
-       #st.write(st.session_state.numeric_date_cols_orig)
-    try:
-        # 그래프 생성
-        st.subheader('Plotting Graph')
-        # 두 열로 레이아웃 분할
-        col1, col2 = st.columns(2)
-        with col1:    
-            # 사용자 입력 받기
-            x_axis = st.selectbox('Select the X-axis', options=st.session_state.numeric_date_cols_orig, index=1)
-        with col2:
-            y_axis = st.selectbox('Select the Y-axis', options=st.session_state.numeric_date_cols_orig, index=2)
-        
-        # 스케터 플롯 생성
-        fig = px.scatter(df_final, x=x_axis, y=y_axis, text="Name",
-                         title=f'Scatter Plot of {x_axis} vs {y_axis}',
-                         hover_data=['Name'])
-        
-        # 텍스트 위치 조정
-        fig.update_traces(textposition='top right', marker=dict(size=12),
-                          hoverinfo='text+x+y',
-                          hovertemplate="<br>".join([
-                              "Name: %{text}",
-                              "{}: %{{x}}".format(x_axis),
-                              "{}: %{{y}}".format(y_axis)
-                          ])
-        )
-        
-        # 그래프 크기 조정
-        fig.update_layout(width=800, height=600)  # 원하는 크기로 설정 가능
+    # 'df_final'이 세션 상태에 있는지 확인
+    if 'df_final' in st.session_state and 'numeric_date_cols_orig' in st.session_state:
+        st.write(st.session_state.df_final.head(1))  # 예시로 첫 번째 행을 보여줌
+        try:
+            # 그래프 생성
+            st.subheader('Plotting Graph')
+            # 두 열로 레이아웃 분할
+            col1, col2 = st.columns(2)
+            with col1:
+                # 세션 상태에서 변수 목록 가져오기
+                x_axis = st.selectbox('Select the X-axis', options=st.session_state.numeric_date_cols_orig, index=1)
+            with col2:
+                y_axis = st.selectbox('Select the Y-axis', options=st.session_state.numeric_date_cols_orig, index=2)
+            
+            # 스케터 플롯 생성
+            fig = px.scatter(st.session_state.df_final, x=x_axis, y=y_axis, text="Name",
+                             title=f'Scatter Plot of {x_axis} vs {y_axis}',
+                             hover_data=['Name'])
+            
+            # 텍스트 위치 조정
+            fig.update_traces(textposition='top right', marker=dict(size=12),
+                              hoverinfo='text+x+y',
+                              hovertemplate="<br>".join([
+                                  "Name: %{text}",
+                                  "{}: %{{x}}".format(x_axis),
+                                  "{}: %{{y}}".format(y_axis)
+                              ])
+            )
+            
+            # 그래프 크기 조정
+            fig.update_layout(width=800, height=600)  # 원하는 크기로 설정 가능
 
-        # 스트림릿에 플롯 출력
-        st.plotly_chart(fig, use_container_width=True)  # 화면 너비에 맞추려면 이 옵션을 사용
-    except Exception as e:
-        st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
+            # 스트림릿에 플롯 출력
+            st.plotly_chart(fig, use_container_width=True)  # 화면 너비에 맞추려면 이 옵션을 사용
+        except Exception as e:
+            st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
+    else:
+        st.error("데이터를 먼저 찾아야 그래프를 그릴 수 있습니다.", icon="🚨")
+      
