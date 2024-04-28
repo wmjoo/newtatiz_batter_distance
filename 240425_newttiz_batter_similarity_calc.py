@@ -115,18 +115,18 @@ with tab2:
        # 체크박스를 N열로 배열
        num_columns = 7
        columns = st.columns(num_columns)
-       
-       # 각 열에 체크박스 배치
-       for index, option in enumerate(options):
-           col = columns[index % num_columns]
-           with col:
-               # 디폴트 선택 항목 또는 전체 선택/해제 상태에 따라 체크박스 초기값 설정
-               is_selected = st.checkbox(option, 
-                                           value=option in default_selections,
-                                           # value=(option in default_selections) or st.session_state.selected_all, 
-                                           key=option)
-               if is_selected:
-                   selected_options.append(option)
+       with st.expander("접을 수 있는 섹션"):
+          # 각 열에 체크박스 배치
+          for index, option in enumerate(options):
+              col = columns[index % num_columns]
+              with col:
+                  # 디폴트 선택 항목 또는 전체 선택/해제 상태에 따라 체크박스 초기값 설정
+                  is_selected = st.checkbox(option, 
+                                              value=option in default_selections,
+                                              # value=(option in default_selections) or st.session_state.selected_all, 
+                                              key=option)
+                  if is_selected:
+                      selected_options.append(option)
    
        # 선택된 항목을 거리 계산 기준열로 할당
        ratio_cols = selected_options    
