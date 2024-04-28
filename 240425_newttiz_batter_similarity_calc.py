@@ -12,27 +12,8 @@ st.set_page_config(page_title="타자 유사도 비교", page_icon=":baseball:")
 # 포지션 목록
 positions = ["P", "C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "DH", ""]
 
-# 유사도 데이터
-similarity_data = [
-    [1.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],  # P
-    [0.1, 1.0, 0.2, 0.2, 0.2, 0.2, 0.1, 0.1, 0.1, 0.1, 0.1],  # C
-    [0.1, 0.2, 1.0, 0.4, 0.5, 0.3, 0.2, 0.2, 0.2, 0.3, 0.1],  # 1B
-    [0.1, 0.2, 0.4, 1.0, 0.6, 0.7, 0.3, 0.3, 0.3, 0.1, 0.1],  # 2B
-    [0.1, 0.2, 0.5, 0.6, 1.0, 0.6, 0.3, 0.3, 0.3, 0.1, 0.1],  # 3B
-    [0.1, 0.2, 0.3, 0.7, 0.6, 1.0, 0.3, 0.3, 0.3, 0.1, 0.1],  # SS
-    [0.1, 0.1, 0.2, 0.3, 0.3, 0.3, 1.0, 0.6, 0.6, 0.1, 0.1],  # LF
-    [0.1, 0.1, 0.2, 0.3, 0.3, 0.3, 0.6, 1.0, 0.6, 0.1, 0.1],  # CF
-    [0.1, 0.1, 0.2, 0.3, 0.3, 0.3, 0.6, 0.6, 1.0, 0.1, 0.1],  # RF
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0.1],  # DH
-    [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],  # '' void
-]
-
-# DataFrame 생성
-similarity_matrix = pd.DataFrame(similarity_data, index=positions, columns=positions)
-#st.write(similarity_matrix)
-
-
-tab1, tab2, tab3 = st.tabs(["Raw", "Find Simmiliar Player", "Plot"])
+# Main Tab 
+tab1, tab2, tab3 = st.tabs(["Raw", "Find Player", "Plot"])
 with tab1:
    st.subheader('Raw Data') 
    if 'raw_data' not in st.session_state:
@@ -106,12 +87,12 @@ with tab2:
            
        # 사용자가 선택할 수 있는 목록
        options = baseball_positions + ['']
-       # 디폴트로 선택되어야 할 항목들
-       # default_selections = ['AVG', 'OBP', 'SLG', 'OPS', 'wRC+']
-   
        #############################################
        # 체크박스를 N열로 배열
        st.write('Positions')
+       position_option_on = st.toggle('Activate feature')
+       if position_option_on:
+           st.write('Feature activated!')
        num_columns = 6
        columns = st.columns(num_columns)
        selected_positions = []
