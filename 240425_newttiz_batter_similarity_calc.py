@@ -175,8 +175,9 @@ with tab2:
    except Exception as e:
        st.error(f"예상치 못한 에러가 발생했습니다: {e}", icon="🚨")
 with tab3:
-    st.write(st.session_state.df_final.head(1))
-    st.write(st.session_state.numeric_date_cols_orig)
+    if 'df_final' in df_final:
+       st.write(st.session_state.df_final.head(1))
+       #st.write(st.session_state.numeric_date_cols_orig)
     try:
         # 그래프 생성
         st.subheader('Plotting Graph')
@@ -184,9 +185,9 @@ with tab3:
         col1, col2 = st.columns(2)
         with col1:    
             # 사용자 입력 받기
-            x_axis = st.selectbox('Select the X-axis', options=st.session_state.numeric_date_cols_orig, index=0)
+            x_axis = st.selectbox('Select the X-axis', options=st.session_state.numeric_date_cols_orig, index=1)
         with col2:
-            y_axis = st.selectbox('Select the Y-axis', options=st.session_state.numeric_date_cols_orig, index=1)
+            y_axis = st.selectbox('Select the Y-axis', options=st.session_state.numeric_date_cols_orig, index=2)
         
         # 스케터 플롯 생성
         fig = px.scatter(df_final, x=x_axis, y=y_axis, text="Name",
