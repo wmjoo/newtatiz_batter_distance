@@ -89,7 +89,7 @@ with tab2:
        options = baseball_positions + ['']
        # 체크박스를 N열로 배열
        st.write('Positions')
-       position_option_on = st.toggle('Activate feature')
+       position_option_on = st.toggle('Similar Position')
       
        num_columns = 6
        columns = st.columns(num_columns)
