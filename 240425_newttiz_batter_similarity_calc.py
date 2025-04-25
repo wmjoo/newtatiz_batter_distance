@@ -10,12 +10,30 @@ import requests
 # 페이지 설정: 탭 제목 변경
 st.set_page_config(page_title="타자 유사도 비교", page_icon=":baseball:")
 
-# 포지션 목록
-positions = ["P", "C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "DH", ""]
 
+# 크롤링 대상 URL
+url = 'https://statiz.sporki.com/stats/?m=total&m2=batting&m3=default&so=WAR&ob=DESC&sy=1982&ey=2024&te=&po=&lt=10100&reg=A&pe=&ds=&de=&we=&hr=&ha=&ct=&st=&vp=&bo=&pt=&pp=&ii=&vc=&um=&oo=&rr=&sc=&bc=&ba=&li=&as=&ae=&pl=&gc=&lr=&pr=100000&ph=&hs=&us=&na=&ls=0&sf1=G&sk1=&sv1=&sf2=G&sk2=&sv2='
+
+# 헤더 설정 (403 방지용)
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
 }
+
+try:
+    response = requests.get(url, headers=headers)
+    st.write(f"응답 코드: {response.status_code}")
+    
+    if response.status_code == 200:
+        tables = pd.read_html(response.text)
+        df = tables[0]
+        st.write(df.head())  # 상위 5개 행 출력
+    else:
+        st.write("❌ 페이지 요청에 실패했습니다.")
+except Exception as e:
+    st.write(f"예외 발생: {e}")
+
+# 포지션 목록
+positions = ["P", "C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "DH", ""]
 
 # Main Tab 
 tab1, tab2, tab3 = st.tabs(["Raw", "Find Player", "Plot"])
@@ -23,17 +41,17 @@ with tab1:
     st.subheader('Raw Data') 
     if 'raw_data' not in st.session_state:
         try:
-            url = 'https://statiz.sporki.com/stats/?m=total&m2=batting&m3=default&so=WAR&ob=DESC&sy=1982&ey=2024&te=&po=&lt=10100&reg=A&pe=&ds=&de=&we=&hr=&ha=&ct=&st=&vp=&bo=&pt=&pp=&ii=&vc=&um=&oo=&rr=&sc=&bc=&ba=&li=&as=&ae=&pl=&gc=&lr=&pr=1000&ph=&hs=&us=&na=&ls=0&sf1=G&sk1=&sv1=&sf2=G&sk2=&sv2='
-            st.write(f"📡 요청 URL: {url}")
+            # url = 'https://statiz.sporki.com/stats/?m=total&m2=batting&m3=default&so=WAR&ob=DESC&sy=1982&ey=2024&te=&po=&lt=10100&reg=A&pe=&ds=&de=&we=&hr=&ha=&ct=&st=&vp=&bo=&pt=&pp=&ii=&vc=&um=&oo=&rr=&sc=&bc=&ba=&li=&as=&ae=&pl=&gc=&lr=&pr=1000&ph=&hs=&us=&na=&ls=0&sf1=G&sk1=&sv1=&sf2=G&sk2=&sv2='
+            # st.write(f"📡 요청 URL: {url}")
 
-            response = requests.get(url, headers=headers)
-            st.write(f"📄 응답 상태 코드: {response.status_code}")
-            # HTML 내의 모든 테이블을 DataFrame으로 읽어옴
-            #    tables = pd.read_html(response.text)
-            df_list = pd.read_html(response.text)
-            st.write(tables)
-            # 첫 번째 테이블을 출력
-            df = tables[0]
+            # response = requests.get(url, headers=headers)
+            # st.write(f"📄 응답 상태 코드: {response.status_code}")
+            # # HTML 내의 모든 테이블을 DataFrame으로 읽어옴
+            # #    tables = pd.read_html(response.text)
+            # df_list = pd.read_html(response.text)
+            # st.write(tables)
+            # # 첫 번째 테이블을 출력
+            # df = tables[0]
             
             # 두 번째 요소만 추출
             second_elements = [element[1] for element in df.columns]
