@@ -18,7 +18,6 @@ url = 'https://statiz.sporki.com/stats/?m=total&m2=batting&m3=default&so=WAR&ob=
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
 }
-
 try:
     response = requests.get(url, headers=headers)
     st.write(f"응답 코드: {response.status_code}")
