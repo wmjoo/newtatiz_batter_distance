@@ -20,13 +20,13 @@ with tab1:
       try:
            # URL 설정
            url = 'https://statiz.sporki.com/stats/?m=total&m2=batting&m3=default&so=WAR&ob=DESC&sy=1982&ey=2024&te=&po=&lt=10100&reg=A&pe=&ds=&de=&we=&hr=&ha=&ct=&st=&vp=&bo=&pt=&pp=&ii=&vc=&um=&oo=&rr=&sc=&bc=&ba=&li=&as=&ae=&pl=&gc=&lr=&pr=1000&ph=&hs=&us=&na=&ls=0&sf1=G&sk1=&sv1=&sf2=G&sk2=&sv2='
-           
+           st.write(url)
            # 웹페이지에서 데이터를 가져옴
            response = requests.get(url)
-           
+           st.write(response)
            # HTML 내의 모든 테이블을 DataFrame으로 읽어옴
            tables = pd.read_html(response.text)
-           
+           st.write(tables)
            # 첫 번째 테이블을 출력
            df = tables[0]
            
