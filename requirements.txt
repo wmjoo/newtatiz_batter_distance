@@ -4,3 +4,4 @@ pandas
 scikit-learn
 lxml
 plotly
+html5lib
