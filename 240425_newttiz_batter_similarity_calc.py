@@ -13,6 +13,10 @@ st.set_page_config(page_title="타자 유사도 비교", page_icon=":baseball:")
 # 포지션 목록
 positions = ["P", "C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "DH", ""]
 
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+}
+
 # Main Tab 
 tab1, tab2, tab3 = st.tabs(["Raw", "Find Player", "Plot"])
 with tab1:
@@ -23,7 +27,7 @@ with tab1:
            url = 'https://statiz.sporki.com/stats/?m=total&m2=batting&m3=default&so=WAR&ob=DESC&sy=1982&ey=2024&te=&po=&lt=10100&reg=A&pe=&ds=&de=&we=&hr=&ha=&ct=&st=&vp=&bo=&pt=&pp=&ii=&vc=&um=&oo=&rr=&sc=&bc=&ba=&li=&as=&ae=&pl=&gc=&lr=&pr=1000&ph=&hs=&us=&na=&ls=0&sf1=G&sk1=&sv1=&sf2=G&sk2=&sv2='
            st.write(url)
            # 웹페이지에서 데이터를 가져옴
-           response = requests.get(url)
+           response = requests.get(url, headers=headers)
            st.write(response)
            # HTML 내의 모든 테이블을 DataFrame으로 읽어옴
            tables = pd.read_html(response.text)
