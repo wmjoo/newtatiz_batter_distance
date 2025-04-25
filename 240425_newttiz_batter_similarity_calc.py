@@ -5,6 +5,7 @@ import numpy as np
 import requests
 import lxml
 import plotly.express as px
+import requests
 
 # 페이지 설정: 탭 제목 변경
 st.set_page_config(page_title="타자 유사도 비교", page_icon=":baseball:")
